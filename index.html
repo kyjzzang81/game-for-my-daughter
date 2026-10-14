@@ -339,63 +339,77 @@ function tapItems(spots,onTap,onAll){ let n=0;
   spots.forEach(([e,l,t],i)=>{ const it=el('div','item tapme',e,{left:l,top:t});
     it.onclick=()=>{ sfx.pop(); it.classList.add('used'); const [x,y]=centerOf(it); sparkle(x,y); onTap(i,e); if(++n===spots.length) onAll(); }; }); }
 
+const flipWolf='<span style="display:inline-block;transform:scaleX(-1)">🐺</span>';
+const ONBED='calc(8vh + 11vmin)'; // 침대 위에 누운 위치
 const HOOD=[
- {who:'mom',text:'빨간 모자를 쓴 귀여운 아이가 살았어요. 엄마가 말했어요. "할머니께 맛있는 걸 갖다 드리렴."', hint:'👆 바구니에 담을 음식을 눌러요!',
-  afterWho:['mom','girl'], after:'엄마가 말했어요. "숲에서 모르는 사람이랑 이야기하면 안 돼!" "네! 다녀오겠습니다!"',
-  play:done=>{ const mom=actor('👩','8%','14%'), g=girl('28%','14%'); const basket=el('div','item','🧺',{left:'48%',bottom:'14%',top:'auto'});
-    const names={'🍞':'빵','🍎':'사과','🥛':'우유'};
-    tapItems([['🍞','62%','40%'],['🍎','78%','52%'],['🥛','86%','32%']],
+ {who:'mom',text:'빨간 모자는 할머니가 선물해 주신 빨간 모자를 언제나 쓰고 다녔어요. 엄마가 말했어요. "아프신 할머니께 빵과 과자를 갖다 드리렴."', hint:'👆 바구니에 담을 음식을 눌러요!',
+  afterWho:['mom','girl'], after:'"숲길에서는 한눈팔지 말고 곧장 가야 해!" "네, 엄마!"',
+  play:done=>{ actor('👩','8%','14%'); const g=girl('28%','14%'); const basket=el('div','item','🧺',{left:'48%',bottom:'14%',top:'auto'});
+    const names={'🍞':'빵','🍪':'과자','🧁':'컵케이크'};
+    tapItems([['🍞','62%','40%'],['🍪','78%','52%'],['🧁','86%','32%']],
       (i,e)=>{ replay(g); g.classList.add('happy'); replay(basket); basket.classList.add('happy'); bubble(g,`${names[e]} 담았다!`,1400,'girl'); },
       ()=>setTimeout(done,1600)); }},
- {text:'빨간 모자는 숲길을 걸어갔어요. 숲속에는 예쁜 꽃이 가득했어요.', hint:'👆 꽃을 눌러서 할머니께 드릴 꽃을 따요!',
-  after:'꽃다발 완성! 할머니가 좋아하시겠죠?',
-  play:done=>{ forest(); const g=girl('40%','12%');
-    tapItems([['🌷','8%','58%'],['🌼','26%','48%'],['🌸','68%','50%'],['🌻','84%','58%']],
-      ()=>{ replay(g); g.classList.add('happy'); bubble(g,['예쁘다!','향기 좋아!','와아!'][Math.random()*3|0],1200,'girl'); },
-      ()=>{ g.innerHTML='<span class="hood">👧</span>💐'; setTimeout(done,1200); }); }},
- {who:'wolf',text:'그때, 늑대가 나타났어요. "꼬마야, 어디 가니?"', hint:'👆 빨간 모자를 눌러서 대답해요!',
-  after:'늑대는 지름길로 할머니 댁에 먼저 달려갔어요!',
+ {who:'wolf',text:'빨간 모자가 신나게 숲길을 걷는데, 늑대가 나타났어요. "꼬마야, 어디 가니?"', hint:'👆 빨간 모자를 눌러서 대답해요!',
+  after:'빨간 모자는 엄마 말씀을 깜빡 잊고 말았어요.',
   play:done=>{ forest(); const g=girl('16%','12%'); g.classList.add('tapme'); const w=actor('🐺','62%','14%');
     g.onclick=()=>{ if(g.dataset.done) return; g.dataset.done=1; g.classList.remove('tapme'); sfx.tap();
-      lines([[g,'할머니 댁에 가요!','girl'],[w,'그래? 그럼 잘 가렴~ 히히히','wolf']],()=>{
-        w.innerHTML='<span style="display:inline-block;transform:scaleX(-1)">🐺</span>'; w.classList.add('runaway'); w.style.left='120%'; tone(600,.6,'sine',-400);
-        setTimeout(done,900); }); }; }},
- {text:'똑똑! 늑대가 할머니 댁 문을 두드렸어요. 할머니가 창밖을 보고 깜짝 놀랐어요!', hint:'👆 할머니를 눌러서 옷장에 숨겨 드려요!',
-  after:'할머니는 옷장에 쏙! 늑대는 할머니 모자를 쓰고 침대에 누웠어요.',
-  play:done=>{ room(); const closet=el('div','item','🚪',{left:'80%',top:'auto',bottom:'14%',fontSize:'clamp(90px,15vw,160px)'});
-    const bed=el('div','item','🛏️',{left:'38%',top:'auto',bottom:'12%',fontSize:'clamp(90px,15vw,160px)'});
-    const gm=actor('👵','58%','14%'); gm.classList.add('tapme'); const w=actor('🐺','2%','14%',true);
-    gm.onclick=()=>{ if(gm.dataset.done) return; gm.dataset.done=1; gm.classList.remove('tapme');
-      bubble(gm,'어머나! 얼른 숨어야지!',1600,'grandma');
-      setTimeout(()=>{ gm.style.left='82%'; setTimeout(()=>{ gm.style.opacity=0; replay(closet); closet.classList.add('shake'); sfx.pop();
-        w.style.left='40%'; setTimeout(()=>{ w.innerHTML='<span class="nightcap">🐺</span>'; w.style.bottom='24%'; bubble(w,'히히, 할머니인 척 해야지~',1800,'wolf'); setTimeout(done,1800); },1100); },1000); },900); }; }},
- {text:'빨간 모자가 도착했어요. 어? 할머니가 좀 이상해요!', hint:'👆 👂 👀 👄 를 눌러서 물어봐요!',
-  after:'빨간 모자는 깜짝 놀랐어요!',
-  play:done=>{ room(); el('div','item','🛏️',{left:'50%',top:'auto',bottom:'10%',fontSize:'clamp(110px,18vw,190px)'});
-    const w=actor('<span class="nightcap">🐺</span>','56%','26%'); const g=girl('12%','12%');
-    const QA={'👂':['할머니, 귀가 왜 이렇게 커요?','네 목소리를 잘 들으려고~'],'👀':['할머니, 눈이 왜 이렇게 커요?','너를 잘 보려고~'],'👄':['할머니, 입이 왜 이렇게 커요?','맛있는 걸 먹으려고~']};
-    let asked=0, busy=false;
-    Object.keys(QA).forEach((e,i)=>{ const b=el('div','item tapme',e,{left:(14+i*16)+'%',top:'44%'});
-      b.onclick=()=>{ if(busy||b.dataset.done) return; busy=true; b.dataset.done=1; b.classList.remove('tapme'); b.style.opacity=.4; sfx.tap();
-        lines([[g,QA[e][0],'girl'],[w,QA[e][1],'wolf']],()=>{ busy=false;
-          if(++asked===3) lines([[w,'어흥! 사실은 나는 늑대다!','wolf'],[g,'으앙! 도와주세요!','girl']],()=>{ w.style.bottom='14%'; w.innerHTML='🐺'; done(); });
-          if(asked===3){ replay(w); w.classList.add('shake'); tone(150,.6,'sawtooth',-50); } }); }; }); }},
- {who:'girl',text:'"도와주세요!" 우리도 함께 소리쳐 볼까요?', hint:'👆 📣 확성기를 세 번 눌러요!',
-  after:'늑대는 멀리멀리 도망갔어요. 할머니도 옷장에서 나왔어요!',
-  play:done=>{ room(); const g=girl('22%','12%'); const w=actor('🐺','62%','14%');
-    const mega=el('div','item tapme','📣',{left:'38%',top:'44%',fontSize:'clamp(70px,11vw,110px)'}); let n=0;
-    mega.onclick=()=>{ if(n>=3) return; n++; sfx.pop(); const [x,y]=centerOf(mega); sparkle(x,y,'❗💥⭐'); replay(g); g.classList.add('happy');
-      bubble(g,'도와주세요!',1000,'girl'); replay(w); w.classList.add('shake');
-      if(n===3){ mega.classList.remove('tapme');
-        const man=actor('🧔','-20%','14%'); setTimeout(()=>{ man.style.left='4%'; },300);
-        setTimeout(()=>lines([[man,'나무꾼 아저씨가 왔다! 늑대야, 저리 가!','man'],[w,'으악! 도망가자!','wolf']],()=>{
-          w.innerHTML='<span style="display:inline-block;transform:scaleX(-1)">🐺</span>'; w.classList.add('runaway'); w.style.left='120%'; tone(600,.8,'sine',-500);
-          const gm=actor('👵','80%','14%'); gm.style.opacity=0; setTimeout(()=>{ gm.style.opacity=1; gm.classList.add('happy'); },1000);
-          setTimeout(done,1600); }),1400); } }; }},
- {text:'빨간 모자와 할머니, 나무꾼 아저씨는 맛있는 빵을 함께 나눠 먹었어요. 끝!', hint:'👆 화면을 눌러서 축하해요!',
-  after:'참 잘했어요! 🎉 숲에서는 모르는 사람을 따라가면 안 돼요!',
-  play:done=>{ room(); el('div','item','🍞🍎🥛',{left:'38%',top:'auto',bottom:'34%',fontSize:'clamp(40px,7vw,70px)'});
-    [[girl('22%','10%')],[actor('👵','46%','10%')],[actor('🧔','68%','10%')]].forEach(([p],i)=>{ p.classList.add('dance'); p.style.animationDelay=i*.2+'s'; });
+      lines([[g,'아프신 할머니 댁에 가요!','girl'],[w,'할머니께 예쁜 꽃을 드리면 정말 좋아하실 거야~','wolf'],[g,'와, 좋은 생각이다!','girl']],done); }; }},
+ {text:'빨간 모자는 숲속에서 꽃을 꺾기 시작했어요.', hint:'👆 꽃을 눌러서 꽃다발을 만들어요!',
+  after:'그 사이, 늑대는 지름길로 헐떡헐떡 할머니 댁에 먼저 달려갔어요!',
+  play:done=>{ forest(); const g=girl('40%','12%'); const w=actor(flipWolf,'60%','14%'); w.classList.add('runaway');
+    let first=true;
+    tapItems([['🌷','8%','58%'],['🌼','26%','48%'],['🌸','68%','50%'],['🌻','84%','58%']],
+      ()=>{ replay(g); g.classList.add('happy'); bubble(g,['예쁘다!','향기 좋아!','와아!'][Math.random()*3|0],1200,'girl');
+        if(first){ first=false; showBubble(w,'헉헉! 히히히~',1200); w.style.left='120%'; } },
+      ()=>{ g.innerHTML='<span class="hood">👧</span>💐'; setTimeout(done,1200); }); }},
+ {who:'wolf',text:'늑대는 할머니 목소리를 흉내 냈어요. "할머니, 저 빨간 모자예요~"', hint:'👆 문을 세 번 똑똑 두드려요!',
+  after:'늑대는 할머니를 꿀꺽 삼키고, 할머니 옷과 모자를 쓰고 침대에 누웠어요.',
+  play:done=>{ room(); const bed=el('div','item','🛏️',{left:'48%',top:'auto',bottom:'8vh',fontSize:'30vmin'});
+    const gm=actor('👵','54%',ONBED); const door=el('div','item tapme','🚪',{left:'24%',top:'auto',bottom:'12%',fontSize:'clamp(90px,15vw,160px)'});
+    const w=actor(flipWolf,'4%','14%'); let n=0;
+    door.onclick=()=>{ if(n>=3) return; n++; tone(180,.12,'square'); setTimeout(()=>tone(160,.12,'square'),130); showBubble(door,'똑똑!',700); replay(door); door.classList.add('shake');
+      if(n===3){ door.classList.remove('tapme');
+        lines([[gm,'오, 빨간 모자니? 어서 들어오렴~','grandma']],()=>{
+          w.style.left='40%';
+          setTimeout(()=>lines([[gm,'어머나, 늑대잖아!','grandma'],[w,'꿀꺽!','wolf']],()=>{
+            gm.style.transition='all .4s'; gm.style.transform='scale(0)'; sfx.pop();
+            setTimeout(()=>{ w.style.left='54%'; w.style.bottom=ONBED; w.innerHTML='<span class="nightcap">🐺</span>'; setTimeout(done,1000); },500); }),1100); }); } }; }},
+ {text:'빨간 모자가 할머니 댁에 도착했어요. 어? 할머니 모습이 이상해요!', hint:'👆 반짝이는 걸 눌러서 물어봐요!',
+  after:'늑대는 빨간 모자도 꿀꺽! 배가 부른 늑대는 쿨쿨 잠이 들었어요.',
+  play:done=>{ room(); el('div','item','🛏️',{left:'48%',top:'auto',bottom:'8vh',fontSize:'30vmin'});
+    const w=actor('<span class="nightcap">🐺</span>','54%',ONBED); const g=girl('12%','12%');
+    const QA=[['👂','할머니, 귀가 왜 이렇게 커요?','네 목소리를 잘 들으려고 크지~'],['👀','할머니, 눈은 왜 이렇게 커요?','너를 잘 보려고 크지~'],['👄','할머니, 입은 왜 이렇게 커요?','너를 한입에 잡아먹으려고 크지!']];
+    const btns=QA.map(([e],i)=>el('div','item',e,{left:(14+i*16)+'%',top:'44%',opacity:.35}));
+    const ask=i=>{ const b=btns[i]; b.style.opacity=1; b.classList.add('tapme');
+      b.onclick=()=>{ if(b.dataset.done) return; b.dataset.done=1; b.classList.remove('tapme'); sfx.tap();
+        lines([[g,QA[i][1],'girl'],[w,QA[i][2],'wolf']],()=>{
+          if(i<2) return ask(i+1);
+          replay(w); w.classList.add('shake'); tone(150,.6,'sawtooth',-50);
+          lines([[w,'꿀꺽!','wolf']],()=>{ g.style.transition='all .4s'; g.style.transform='scale(0)'; sfx.pop(); setTimeout(done,800); }); }); }; };
+    ask(0); }},
+ {who:'man',text:'숲을 지나가던 사냥꾼이 커다란 코골이 소리를 들었어요. "이상한데? 들어가 봐야겠다!"', hint:'👆 ✂️ 가위를 눌러서 늑대 배를 조심조심 열어요!',
+  after:'빨간 모자와 할머니가 무사히 밖으로 나왔어요!',
+  play:done=>{ room(); el('div','item','🛏️',{left:'48%',top:'auto',bottom:'8vh',fontSize:'30vmin'});
+    const w=actor('🐺','52%',ONBED); w.style.fontSize='24vmin'; showBubble(w,'드르렁~ 쿨쿨 💤',99999);
+    const h=actor('🤠','6%','12%'); const sc=el('div','item tapme','✂️',{left:'34%',top:'40%'}); let n=0;
+    sc.onclick=()=>{ if(n>=3) return; n++; tone(1200,.08,'square',-400); showBubble(sc,'싹둑!',600); replay(w); w.classList.add('shake');
+      if(n===3){ sc.classList.remove('tapme'); sc.style.opacity=0;
+        const [x,y]=centerOf(w); sparkle(x,y);
+        const g=girl('34%','12%'), gm=actor('👵','78%','12%'); [g,gm].forEach(p=>p.classList.add('happy'));
+        lines([[g,'휴, 살았다!','girl'],[gm,'고마워요, 사냥꾼 아저씨!','grandma']],done); } }; }},
+ {text:'세 사람은 늑대 배에 무거운 돌멩이를 가득 채웠어요.', hint:'👆 돌멩이를 눌러요!',
+  after:'늑대는 허둥지둥 도망치다가 쿵! 넘어져서 다시는 나타나지 않았대요.',
+  play:done=>{ room(); const w=actor('🐺','54%','14%'); w.style.fontSize='clamp(100px,18vw,180px)';
+    actor('🤠','2%','10%'); girl('14%','10%'); actor('👵','26%','10%');
+    tapItems([['🪨','40%','40%'],['🪨','80%','34%'],['🪨','88%','56%']],
+      ()=>{ tone(120,.2,'square',-40); replay(w); w.classList.add('shake'); },
+      ()=>{ lines([[w,'아이고 배야! 너무 무거워!','wolf']],()=>{
+        w.innerHTML=flipWolf; w.style.transition='left 2.4s ease-in, transform .5s'; w.style.left='78%';
+        setTimeout(()=>{ w.style.transform='rotate(90deg)'; tone(90,.5,'square',-40); showBubble(w,'쿵!',1200); setTimeout(done,1000); },2300); }); }); }},
+ {who:'girl',text:'"앞으로는 한눈팔지 않고 엄마 말씀 잘 들을게요!" 빨간 모자는 할머니와 함께 행복하게 웃었어요. 끝!', hint:'👆 화면을 눌러서 축하해요!',
+  after:'참 잘했어요! 🎉 길을 갈 때는 한눈팔지 않기로 약속해요!',
+  play:done=>{ room(); el('div','item','🍞🍪💐',{left:'38%',top:'auto',bottom:'34%',fontSize:'clamp(40px,7vw,70px)'});
+    [girl('22%','10%'),actor('👵','46%','10%'),actor('🤠','68%','10%')].forEach((p,i)=>{ p.classList.add('dance'); p.style.animationDelay=i*.2+'s'; });
     let n=0; const layer=el('div','',null,{position:'absolute',inset:0});
     layer.onclick=e=>{ sfx.yay(); sparkle(e.clientX,e.clientY,'🎉⭐🎈💖🌷'); if(++n===3) done(); }; }},
 ];
