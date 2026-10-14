@@ -41,6 +41,15 @@ button{font-family:inherit;border:none;cursor:pointer;color:var(--ink)}
 .card.play{border:6px solid var(--pink);animation:wiggle 3s ease-in-out infinite}
 .card.play:active{transform:scale(.95)}
 @keyframes wiggle{0%,90%,100%{transform:rotate(0)}93%{transform:rotate(-3deg)}96%{transform:rotate(3deg)}}
+/* 빨간 모자: 얼굴 뒤에 빨간 두건 */
+.hood{position:relative;display:inline-block;z-index:0}
+.hood::before{content:"";position:absolute;left:-12%;top:-16%;width:124%;height:96%;background:#e53b4b;border-radius:50% 50% 30% 30%;z-index:-1;box-shadow:0 6px 0 #b82535}
+/* 할머니 모자를 쓴 늑대 */
+.nightcap{position:relative;display:inline-block}
+.nightcap::after{content:"👒";position:absolute;left:20%;top:-34%;font-size:.6em}
+/* 실내 배경 */
+.room{position:absolute;inset:0;background:linear-gradient(#ffe9d6 0 62%,#c99a6b 62% 100%);pointer-events:none!important}
+.tree{position:absolute;font-size:clamp(80px,14vw,150px);pointer-events:none!important}
 .card.lock{opacity:.6;filter:grayscale(.7)}
 .card .tag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#fff;border-radius:999px;padding:4px 14px;font-size:16px;box-shadow:0 3px 0 #0002;white-space:nowrap}
 /* 게임 */
@@ -105,7 +114,7 @@ button{font-family:inherit;border:none;cursor:pointer;color:var(--ink)}
   <h2 class="select-title">어떤 이야기를 볼까?</h2>
   <div class="cards">
     <div class="card play" id="pigsCard"><span class="tag">⭐ 놀이 가능</span><div class="art">🐷🐺</div>아기 돼지<br>삼형제</div>
-    <div class="card lock"><span class="tag">🔒 곧 만나요</span><div class="art">👧🍎</div>빨간 모자</div>
+    <div class="card play" id="hoodCard"><span class="tag">⭐ 놀이 가능</span><div class="art">👧🧺</div>빨간 모자</div>
     <div class="card lock"><span class="tag">🔒 곧 만나요</span><div class="art">☀️🌙</div>해님 달님</div>
   </div>
 </section>
@@ -143,7 +152,8 @@ function loadVoice(){ const v=speechSynthesis.getVoices(); koVoice=v.find(x=>x.l
 if('speechSynthesis' in window){ loadVoice(); speechSynthesis.onvoiceschanged=loadVoice; }
 /* 목소리: 내레이터 / 첫째·둘째·막내 돼지(점점 높고 빠르게) / 늑대(낮고 느리게)
    이름 끝에 L을 붙이면 우렁찬 목소리(낮고 느리고 크게) */
-const VOICES={narr:{pitch:1.15,rate:.85},pig1:{pitch:1.3,rate:.9},pig2:{pitch:1.65,rate:1},pig3:{pitch:2,rate:1.15},wolf:{pitch:.3,rate:.75}};
+const VOICES={narr:{pitch:1.15,rate:.85},pig1:{pitch:1.3,rate:.9},pig2:{pitch:1.65,rate:1},pig3:{pitch:2,rate:1.15},wolf:{pitch:.3,rate:.75},
+  girl:{pitch:1.45,rate:1},mom:{pitch:1.2,rate:.9},grandma:{pitch:.85,rate:.8},man:{pitch:.7,rate:.9}};
 const HAS_TTS='speechSynthesis' in window;
 function utter(text,who='narr'){
   const loud=who.endsWith('L'), v=VOICES[loud?who.slice(0,-1):who]||VOICES.narr;
@@ -165,11 +175,11 @@ function talk(lines,queue=false){
   }, queue?0:100);
 }
 /* 문장 속 "따옴표" 부분은 who(등장인물) 목소리로, 나머지는 내레이터 목소리로 읽어요 */
-function say(text,who='narr',queue=false){
+function say(text,who='narr',queue=false){ let q=0; // who가 배열이면 따옴표마다 차례로 다른 목소리
   const lines=[];
   text.replace(/<[^>]+>/g,'').split(/("[^"]*")/).forEach(seg=>{
     if(!seg.trim()) return;
-    if(seg.startsWith('"')) lines.push({t:seg.slice(1,-1),who:who==='narr'?'pig2':who});
+    if(seg.startsWith('"')) { const v=Array.isArray(who)?who[Math.min(q++,who.length-1)]:who; lines.push({t:seg.slice(1,-1),who:v==='narr'?'pig2':v}); }
     else lines.push({t:seg,who:'narr'});
   });
   talk(lines,queue);
@@ -183,6 +193,7 @@ document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{sfx.tap(); go(b
 $('startBtn').onclick=()=>{sfx.pop(); go('select'); say('어떤 이야기를 볼까?')};
 document.querySelector('.card.lock') && document.querySelectorAll('.card.lock').forEach(c=>c.onclick=()=>{tone(300,.2,'triangle'); say('이 이야기는 곧 만나요!')});
 $('pigsCard').onclick=()=>{sfx.pop(); startStory(PIGS)};
+$('hoodCard').onclick=()=>{sfx.pop(); startStory(HOOD)};
 
 /* ---------- 도우미 ---------- */
 const stage=$('stage');
@@ -219,19 +230,19 @@ function house(m, left='50%', full=false, scale=1){
   if(full) h.querySelectorAll('.part').forEach(p=>p.classList.add('show')); return h; }
 
 /* ---------- 이야기 엔진 ---------- */
-let story, idx;
+let story, idx, curWho;
 function startStory(s){ story=s; idx=0; go('game');
   $('progress').innerHTML=s.map(()=>'<i></i>').join(''); runScene(); }
 function runScene(){
   const sc=story[idx]; stage.innerHTML=''; $('next').classList.remove('on');
   $('progress').querySelectorAll('i').forEach((d,i)=>d.classList.toggle('done',i<=idx));
   $('story').innerHTML=sc.text; $('hint').textContent=sc.hint||''; $('hint').style.visibility=sc.hint?'visible':'hidden';
-  say(sc.text,sc.who);
+  curWho=sc.who; say(sc.text,sc.who);
   let finished=false;
-  sc.play(()=>{ if(finished||story[idx]!==sc) return; finished=true; $('hint').style.visibility='hidden'; if(sc.after){ $('story').innerHTML=sc.after; say(sc.after,sc.who,true);} setTimeout(()=>$('next').classList.add('on'),600); });
+  sc.play(()=>{ if(finished||story[idx]!==sc) return; finished=true; $('hint').style.visibility='hidden'; if(sc.after){ $('story').innerHTML=sc.after; curWho=sc.afterWho||sc.who; say(sc.after,curWho,true);} setTimeout(()=>$('next').classList.add('on'),600); });
 }
 $('next').onclick=()=>{ sfx.pop(); idx++; if(idx<story.length) runScene(); else go('select'); };
-$('replay').onclick=()=>{ sfx.tap(); say($('story').innerHTML,story[idx].who); };
+$('replay').onclick=()=>{ sfx.tap(); say($('story').innerHTML,curWho); };
 
 /* 공통 장면: 재료를 톡톡 눌러 집 짓기 */
 function buildScene(m, emoji, voice){
@@ -313,6 +324,80 @@ const PIGS=[
     let n=0; const layer=el('div','',null,{position:'absolute',inset:0});
     layer.onclick=e=>{ sfx.yay(); sparkle(e.clientX,e.clientY,'🎉⭐🎈💖🌟'); if(++n===3) done(); };
   }},
+];
+
+/* ---------- 빨간 모자 ---------- */
+const girl=(l,b)=>actor('<span class="hood">👧</span>',l,b);
+function forest(){ [['0%','36%','🌲'],['14%','40%','🌳'],['72%','38%','🌲'],['86%','34%','🌳']].forEach(([l,b,e])=>el('div','tree',e,{left:l,bottom:b})); }
+function room(){ el('div','room'); el('div','tree','🪟',{left:'40%',top:'34%',fontSize:'clamp(60px,10vw,110px)'}); }
+/* 대사를 말풍선과 함께 차례로: [[대상, 대사, 목소리], ...] */
+function lines(list,onDone,queue=false){
+  talk(list.map(([who,t,v],i)=>({t,who:v,onstart:()=>showBubble(who,t,2200),onend:i===list.length-1?onDone:null})),queue);
+}
+/* 누를 것들을 화면에 뿌려요. 다 누르면 onAll */
+function tapItems(spots,onTap,onAll){ let n=0;
+  spots.forEach(([e,l,t],i)=>{ const it=el('div','item tapme',e,{left:l,top:t});
+    it.onclick=()=>{ sfx.pop(); it.classList.add('used'); const [x,y]=centerOf(it); sparkle(x,y); onTap(i,e); if(++n===spots.length) onAll(); }; }); }
+
+const HOOD=[
+ {who:'mom',text:'빨간 모자를 쓴 귀여운 아이가 살았어요. 엄마가 말했어요. "할머니께 맛있는 걸 갖다 드리렴."', hint:'👆 바구니에 담을 음식을 눌러요!',
+  afterWho:['mom','girl'], after:'엄마가 말했어요. "숲에서 모르는 사람이랑 이야기하면 안 돼!" "네! 다녀오겠습니다!"',
+  play:done=>{ const mom=actor('👩','8%','14%'), g=girl('28%','14%'); const basket=el('div','item','🧺',{left:'48%',bottom:'14%',top:'auto'});
+    const names={'🍞':'빵','🍎':'사과','🥛':'우유'};
+    tapItems([['🍞','62%','40%'],['🍎','78%','52%'],['🥛','86%','32%']],
+      (i,e)=>{ replay(g); g.classList.add('happy'); replay(basket); basket.classList.add('happy'); bubble(g,`${names[e]} 담았다!`,1400,'girl'); },
+      ()=>setTimeout(done,1600)); }},
+ {text:'빨간 모자는 숲길을 걸어갔어요. 숲속에는 예쁜 꽃이 가득했어요.', hint:'👆 꽃을 눌러서 할머니께 드릴 꽃을 따요!',
+  after:'꽃다발 완성! 할머니가 좋아하시겠죠?',
+  play:done=>{ forest(); const g=girl('40%','12%');
+    tapItems([['🌷','8%','58%'],['🌼','26%','48%'],['🌸','68%','50%'],['🌻','84%','58%']],
+      ()=>{ replay(g); g.classList.add('happy'); bubble(g,['예쁘다!','향기 좋아!','와아!'][Math.random()*3|0],1200,'girl'); },
+      ()=>{ g.innerHTML='<span class="hood">👧</span>💐'; setTimeout(done,1200); }); }},
+ {who:'wolf',text:'그때, 늑대가 나타났어요. "꼬마야, 어디 가니?"', hint:'👆 빨간 모자를 눌러서 대답해요!',
+  after:'늑대는 지름길로 할머니 댁에 먼저 달려갔어요!',
+  play:done=>{ forest(); const g=girl('16%','12%'); g.classList.add('tapme'); const w=actor('🐺','62%','14%');
+    g.onclick=()=>{ if(g.dataset.done) return; g.dataset.done=1; g.classList.remove('tapme'); sfx.tap();
+      lines([[g,'할머니 댁에 가요!','girl'],[w,'그래? 그럼 잘 가렴~ 히히히','wolf']],()=>{
+        w.innerHTML='<span style="display:inline-block;transform:scaleX(-1)">🐺</span>'; w.classList.add('runaway'); w.style.left='120%'; tone(600,.6,'sine',-400);
+        setTimeout(done,900); }); }; }},
+ {text:'똑똑! 늑대가 할머니 댁 문을 두드렸어요. 할머니가 창밖을 보고 깜짝 놀랐어요!', hint:'👆 할머니를 눌러서 옷장에 숨겨 드려요!',
+  after:'할머니는 옷장에 쏙! 늑대는 할머니 모자를 쓰고 침대에 누웠어요.',
+  play:done=>{ room(); const closet=el('div','item','🚪',{left:'80%',top:'auto',bottom:'14%',fontSize:'clamp(90px,15vw,160px)'});
+    const bed=el('div','item','🛏️',{left:'38%',top:'auto',bottom:'12%',fontSize:'clamp(90px,15vw,160px)'});
+    const gm=actor('👵','58%','14%'); gm.classList.add('tapme'); const w=actor('🐺','2%','14%',true);
+    gm.onclick=()=>{ if(gm.dataset.done) return; gm.dataset.done=1; gm.classList.remove('tapme');
+      bubble(gm,'어머나! 얼른 숨어야지!',1600,'grandma');
+      setTimeout(()=>{ gm.style.left='82%'; setTimeout(()=>{ gm.style.opacity=0; replay(closet); closet.classList.add('shake'); sfx.pop();
+        w.style.left='40%'; setTimeout(()=>{ w.innerHTML='<span class="nightcap">🐺</span>'; w.style.bottom='24%'; bubble(w,'히히, 할머니인 척 해야지~',1800,'wolf'); setTimeout(done,1800); },1100); },1000); },900); }; }},
+ {text:'빨간 모자가 도착했어요. 어? 할머니가 좀 이상해요!', hint:'👆 👂 👀 👄 를 눌러서 물어봐요!',
+  after:'빨간 모자는 깜짝 놀랐어요!',
+  play:done=>{ room(); el('div','item','🛏️',{left:'50%',top:'auto',bottom:'10%',fontSize:'clamp(110px,18vw,190px)'});
+    const w=actor('<span class="nightcap">🐺</span>','56%','26%'); const g=girl('12%','12%');
+    const QA={'👂':['할머니, 귀가 왜 이렇게 커요?','네 목소리를 잘 들으려고~'],'👀':['할머니, 눈이 왜 이렇게 커요?','너를 잘 보려고~'],'👄':['할머니, 입이 왜 이렇게 커요?','맛있는 걸 먹으려고~']};
+    let asked=0, busy=false;
+    Object.keys(QA).forEach((e,i)=>{ const b=el('div','item tapme',e,{left:(14+i*16)+'%',top:'44%'});
+      b.onclick=()=>{ if(busy||b.dataset.done) return; busy=true; b.dataset.done=1; b.classList.remove('tapme'); b.style.opacity=.4; sfx.tap();
+        lines([[g,QA[e][0],'girl'],[w,QA[e][1],'wolf']],()=>{ busy=false;
+          if(++asked===3) lines([[w,'어흥! 사실은 나는 늑대다!','wolf'],[g,'으앙! 도와주세요!','girl']],()=>{ w.style.bottom='14%'; w.innerHTML='🐺'; done(); });
+          if(asked===3){ replay(w); w.classList.add('shake'); tone(150,.6,'sawtooth',-50); } }); }; }); }},
+ {who:'girl',text:'"도와주세요!" 우리도 함께 소리쳐 볼까요?', hint:'👆 📣 확성기를 세 번 눌러요!',
+  after:'늑대는 멀리멀리 도망갔어요. 할머니도 옷장에서 나왔어요!',
+  play:done=>{ room(); const g=girl('22%','12%'); const w=actor('🐺','62%','14%');
+    const mega=el('div','item tapme','📣',{left:'38%',top:'44%',fontSize:'clamp(70px,11vw,110px)'}); let n=0;
+    mega.onclick=()=>{ if(n>=3) return; n++; sfx.pop(); const [x,y]=centerOf(mega); sparkle(x,y,'❗💥⭐'); replay(g); g.classList.add('happy');
+      bubble(g,'도와주세요!',1000,'girl'); replay(w); w.classList.add('shake');
+      if(n===3){ mega.classList.remove('tapme');
+        const man=actor('🧔','-20%','14%'); setTimeout(()=>{ man.style.left='4%'; },300);
+        setTimeout(()=>lines([[man,'나무꾼 아저씨가 왔다! 늑대야, 저리 가!','man'],[w,'으악! 도망가자!','wolf']],()=>{
+          w.innerHTML='<span style="display:inline-block;transform:scaleX(-1)">🐺</span>'; w.classList.add('runaway'); w.style.left='120%'; tone(600,.8,'sine',-500);
+          const gm=actor('👵','80%','14%'); gm.style.opacity=0; setTimeout(()=>{ gm.style.opacity=1; gm.classList.add('happy'); },1000);
+          setTimeout(done,1600); }),1400); } }; }},
+ {text:'빨간 모자와 할머니, 나무꾼 아저씨는 맛있는 빵을 함께 나눠 먹었어요. 끝!', hint:'👆 화면을 눌러서 축하해요!',
+  after:'참 잘했어요! 🎉 숲에서는 모르는 사람을 따라가면 안 돼요!',
+  play:done=>{ room(); el('div','item','🍞🍎🥛',{left:'38%',top:'auto',bottom:'34%',fontSize:'clamp(40px,7vw,70px)'});
+    [[girl('22%','10%')],[actor('👵','46%','10%')],[actor('🧔','68%','10%')]].forEach(([p],i)=>{ p.classList.add('dance'); p.style.animationDelay=i*.2+'s'; });
+    let n=0; const layer=el('div','',null,{position:'absolute',inset:0});
+    layer.onclick=e=>{ sfx.yay(); sparkle(e.clientX,e.clientY,'🎉⭐🎈💖🌷'); if(++n===3) done(); }; }},
 ];
 </script>
 </body>
