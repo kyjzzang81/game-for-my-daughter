@@ -161,6 +161,7 @@ export class StoryScene extends Phaser.Scene {
     this.stage.add(b);
     this.tweens.add({ targets: b, scale: 1, duration: 300, ease: 'Back.easeOut' });
     this.delay(ms, () => b.destroy());
+    return b;
   }
 
   /* 말풍선 + 그 목소리로 말하기 */

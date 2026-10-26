@@ -46,7 +46,15 @@
   "btn-start": "btn-start.png",
   "cover-pigs": "cover-pigs.png",
   "cover-hood": "cover-hood.png",
-  "cover-sunmoon": "cover-sunmoon.png"
+  "cover-sunmoon": "cover-sunmoon.png",
+  "wolf-gulp": "wolf-gulp.png",
+  "wolf-nightcap-gulp": "wolf-nightcap-gulp.png",
+  "wolf-sleep": "wolf-sleep.png",
+  "wolf-belly1": "wolf-belly1.png",
+  "wolf-belly2": "wolf-belly2.png",
+  "wolf-belly3": "wolf-belly3.png",
+  "wolf-heavy": "wolf-heavy.png",
+  "wolf-blow": "wolf-blow.png"
  },
  "emoji": {
   "👧": "girl",
@@ -81,6 +89,14 @@
   "🌾": "straw",
   "🪵": "log",
   "🧱": "brick",
-  "💨": "wind"
+  "💨": "wind",
+  "🐺꿀꺽": "wolf-gulp",
+  "🐺👒꿀꺽": "wolf-nightcap-gulp",
+  "🐺쿨쿨": "wolf-sleep",
+  "🐺배1": "wolf-belly1",
+  "🐺배2": "wolf-belly2",
+  "🐺배3": "wolf-belly3",
+  "🐺무거워": "wolf-heavy",
+  "🐺후": "wolf-blow"
  }
 }

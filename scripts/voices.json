@@ -1,15 +1,45 @@
 {
-  "_설명": "등장인물별 타입캐스트 목소리. node scripts/list-voices.mjs 로 다른 목소리를 찾아 바꿀 수 있어요",
+  "_설명": "등장인물별 타입캐스트 목소리. node scripts/list-voices.mjs 로 다른 목소리를 찾아 바꿀 수 있어요 후보 비교: node scripts/audition.mjs grandma|wolf|man",
   "model": "ssfm-v30",
   "voices": {
-    "narr":    { "voice_id": "tc_6a4f2130d153a5cac8e19996", "name": "Jiseon (여, 중년, 오디오북)" },
-    "mom":     { "voice_id": "tc_6a21054564d676539427427e", "name": "Hyejin (여, 중년)" },
-    "girl":    { "voice_id": "tc_6699eb5749dfac016c29445c", "name": "Sua (여, 어린이)" },
-    "grandma": { "voice_id": "tc_6a867e7a0e6ddfd2f2dd17b6", "name": "Kyungae (여, 노년)" },
-    "wolf":    { "voice_id": "tc_66860d458ca8b2dc5f72b865", "name": "Deokhwan (남, 노년, 게임)", "pitch": -2 },
-    "man":     { "voice_id": "tc_6a0e85a97f7750959b970d5d", "name": "Daejin (남, 중년)" },
-    "pig1":    { "voice_id": "tc_6699eb3849dfac016c29444c", "name": "Siwoo (남, 어린이)" },
-    "pig2":    { "voice_id": "tc_660645fb8db3e2c06ff7070b", "name": "Taeji (남, 어린이)" },
-    "pig3":    { "voice_id": "tc_699d27b557c86e3f4249c051", "name": "Okji (여, 어린이)" }
+    "narr": {
+      "voice_id": "tc_6a4f2130d153a5cac8e19996",
+      "name": "Jiseon (여, 중년, 오디오북)"
+    },
+    "mom": {
+      "voice_id": "tc_6a21054564d676539427427e",
+      "name": "Hyejin (여, 중년)"
+    },
+    "girl": {
+      "voice_id": "tc_6699eb5749dfac016c29445c",
+      "name": "Sua (여, 어린이)"
+    },
+    "grandma": {
+      "voice_id": "tc_61c2f70c343884babeed840b",
+      "name": "숙희 (여, 노년, 캐릭터)",
+      "pitch": -1
+    },
+    "wolf": {
+      "voice_id": "tc_6a867e6bd49b8f6a07db59da",
+      "name": "하데스 (남, 중년, 게임 악역)",
+      "pitch": -2
+    },
+    "man": {
+      "voice_id": "tc_63aaebf1cef3e7d6ce6d3628",
+      "name": "김반장 (남, 중년, 굵은 목소리)",
+      "pitch": -2
+    },
+    "pig1": {
+      "voice_id": "tc_6699eb3849dfac016c29444c",
+      "name": "Siwoo (남, 어린이)"
+    },
+    "pig2": {
+      "voice_id": "tc_660645fb8db3e2c06ff7070b",
+      "name": "Taeji (남, 어린이)"
+    },
+    "pig3": {
+      "voice_id": "tc_699d27b557c86e3f4249c051",
+      "name": "Okji (여, 어린이)"
+    }
   }
 }

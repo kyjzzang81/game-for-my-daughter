@@ -125,6 +125,12 @@ function blowScene(m: Mat, strong = false): Page['play'] {
     wolf.tap(() => {
       if (n >= 3) return;
       n++; sfx.blow();
+      // 볼을 빵빵하게 부풀려 힘껏 부는 모습으로 바꿨다가 돌아와요
+      if (IMG['🐺후']) {
+        wolf.anim('none').setEmoji('🐺후', true);
+        s.tweens.add({ targets: wolf.inner, scaleX: 1.12, scaleY: 0.94, duration: 160, yoyo: true, repeat: 1 });
+        s.delay(800, () => { wolf.setEmoji('🐺', true); if (n < 3) wolf.anim('tapme'); });
+      }
       const [x, y] = wolf.center();
       s.bubble(wolf, '후우우~!', 900, 'wolf');
       for (let i = 0; i < 3; i++) s.delay(i * 120, () => {

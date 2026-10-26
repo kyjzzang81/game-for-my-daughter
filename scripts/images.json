@@ -42,8 +42,7 @@
       "ref": [
         "girl"
       ],
-      "prompt": "A sly but goofy cartoon gray wolf standing on two legs, big pointy ears, bushy tail, mischievous grin, not scary, body turned toward the viewer's left. Same clay style as the reference.",
-      "flop": true
+      "prompt": "A sly, sneaky cartoon gray wolf standing on two legs, narrowed cunning eyes, wide toothy grin with two small fangs, big pointy ears, bushy tail, hunched slightly forward like he is plotting something. Scary-funny for preschoolers, not gory. The wolf faces and looks toward the viewer's LEFT side of the image (snout pointing left). Same clay style as the reference."
     },
     "wolf-nightcap": {
       "kind": "sprite",
@@ -51,8 +50,7 @@
       "ref": [
         "wolf"
       ],
-      "prompt": "The same gray wolf as the reference, now disguised as a grandmother: wearing a frilly white nightcap, small round glasses, and a pink flowery nightgown, sitting up, sneaky grin, body turned toward the viewer's left.",
-      "flop": true
+      "prompt": "The same sly gray wolf as the reference, disguised as a grandmother: frilly white nightcap, small round glasses, pink flowery nightgown, sitting up, sneaky grin. The wolf faces and looks toward the viewer's LEFT side of the image (snout pointing left)."
     },
     "pig1": {
       "kind": "sprite",
@@ -280,6 +278,77 @@
     "cover-sunmoon": {
       "kind": "sprite",
       "prompt": "A storybook cover vignette: a smiling clay sun and a smiling crescent moon side by side above a small rope ladder, soft pastel colors."
+    },
+    "wolf-gulp": {
+      "kind": "sprite",
+      "emoji": "🐺꿀꺽",
+      "ref": [
+        "wolf"
+      ],
+      "prompt": "The same sly gray wolf as the reference, lunging forward to gulp something: head shown big and close, enormous wide-open mouth showing tongue and teeth, eyes squeezed with greed, arms reaching forward. Funny, not gory. The wolf faces and looks toward the viewer's LEFT side of the image (snout pointing left)."
+    },
+    "wolf-nightcap-gulp": {
+      "kind": "sprite",
+      "emoji": "🐺👒꿀꺽",
+      "ref": [
+        "wolf-nightcap"
+      ],
+      "prompt": "The same wolf disguised as grandmother from the reference (frilly white nightcap, glasses, pink nightgown), lunging forward to gulp something: head shown big and close, enormous wide-open mouth, eyes squeezed with greed, arms reaching forward. Funny, not gory. The wolf faces and looks toward the viewer's LEFT side of the image (snout pointing left)."
+    },
+    "wolf-sleep": {
+      "kind": "sprite",
+      "emoji": "🐺쿨쿨",
+      "ref": [
+        "wolf-nightcap"
+      ],
+      "size": "1536x1024",
+      "prompt": "The same wolf disguised as grandmother from the reference (frilly white nightcap, pink nightgown), lying flat on his back fast asleep, head on the LEFT and feet on the right, eyes closed, mouth open snoring, round full belly sticking up. Horizontal composition, no bed, no pillow."
+    },
+    "wolf-belly1": {
+      "kind": "sprite",
+      "emoji": "🐺배1",
+      "ref": [
+        "wolf-sleep"
+      ],
+      "size": "1536x1024",
+      "prompt": "Exactly the same sleeping wolf as the reference image, same pose, same position, same clothes, head on the LEFT, still fast asleep. The only change: his belly is a bit bigger and rounder, with the outline of round stones showing under the nightgown. Horizontal composition, no bed, no pillow.",
+      "fidelity": "high"
+    },
+    "wolf-belly2": {
+      "kind": "sprite",
+      "emoji": "🐺배2",
+      "ref": [
+        "wolf-sleep"
+      ],
+      "size": "1536x1024",
+      "prompt": "Exactly the same sleeping wolf as the reference image, same pose, same position, same clothes, head on the LEFT, still fast asleep. The only change: his belly is much bigger, very round like a ball, with the outline of round stones showing under the nightgown. Horizontal composition, no bed, no pillow.",
+      "fidelity": "high"
+    },
+    "wolf-belly3": {
+      "kind": "sprite",
+      "emoji": "🐺배3",
+      "ref": [
+        "wolf-sleep"
+      ],
+      "size": "1536x1024",
+      "prompt": "Exactly the same sleeping wolf as the reference image, same pose, same position, same clothes, head on the LEFT, still fast asleep. The only change: his belly is huge, enormously round and heavy, stretching the nightgown, with the outline of round stones showing under the nightgown. Horizontal composition, no bed, no pillow.",
+      "fidelity": "high"
+    },
+    "wolf-heavy": {
+      "kind": "sprite",
+      "emoji": "🐺무거워",
+      "ref": [
+        "wolf-nightcap"
+      ],
+      "prompt": "The same wolf disguised as grandmother from the reference (nightcap askew, pink nightgown), now awake and standing, holding a huge heavy round belly with both hands, wobbling, dizzy worried face with sweat drops. The wolf faces and looks toward the viewer's LEFT side of the image (snout pointing left)."
+    },
+    "wolf-blow": {
+      "kind": "sprite",
+      "emoji": "🐺후",
+      "ref": [
+        "wolf"
+      ],
+      "prompt": "The same sly gray wolf as the reference, blowing as hard as he can: cheeks puffed up huge and round, lips pushed out, eyes squeezed shut with effort, leaning forward with arms back, a few small wind lines coming out of his mouth. The wolf faces and looks toward the viewer's LEFT side of the image (snout pointing left)."
     }
   }
 }

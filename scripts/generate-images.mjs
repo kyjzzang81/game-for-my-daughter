@@ -31,6 +31,7 @@ async function generate(k, img) {
     // 참고 그림을 함께 보내는 편집(edits) 요청
     const form = new FormData();
     Object.entries(common).forEach(([n, v]) => form.append(n, v));
+    if (img.fidelity) form.append('input_fidelity', img.fidelity);
     for (const r of img.ref) form.append('image[]', new Blob([readFileSync(raw(r))], { type: 'image/png' }), `${r}.png`);
     res = await fetch('https://api.openai.com/v1/images/edits', { method: 'POST', headers: { Authorization: `Bearer ${key}` }, body: form });
   } else {

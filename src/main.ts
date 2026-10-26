@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { W, H } from './ui';
-import { BootScene } from './scenes/BootScene';
+import { BootScene, loadManifests } from './scenes/BootScene';
 import { HomeScene } from './scenes/HomeScene';
 import { SelectScene } from './scenes/SelectScene';
 import { StoryScene } from './scenes/StoryScene';
@@ -10,6 +10,8 @@ import '@fontsource/jua';
 // 한글 글꼴은 글자 묶음별 파일로 나뉘어 있어요. 캔버스는 글꼴이 늦게 와도 다시 그려 주지 않으니,
 // 앱에 들어 있는 Jua 묶음을 시작할 때 모두 불러 둬요
 await Promise.all([...document.fonts].filter(f => f.family.includes('Jua')).map(f => f.load().catch(() => {})));
+
+await loadManifests();
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,

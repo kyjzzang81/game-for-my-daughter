@@ -17,6 +17,32 @@ function nightcap(w: Actor) {
   if (IMG['🐺👒']) { w.setEmoji('🐺👒'); return; }
   w.setEmoji('🐺'); w.prop('👒', -0.05, -1.15, 0.6);
 }
+/* 늑대 모습 바꾸기. 그 그림이 없으면 그대로 둬요 */
+function pose(w: Actor, key: string, flip = false) {
+  if (IMG[key]) w.setEmoji(key, flip);
+  return w;
+}
+/* 늑대가 왼쪽을 보며 얼굴을 크게 들이밀고 꿀꺽! 끝나면 원래 모습으로 */
+function wolfGulp(w: Actor, gulpKey: string, backKey: string, victim: Actor, then: () => void) {
+  const s = w.scene;
+  w.anim('none');
+  pose(w, gulpKey);
+  s.tweens.add({ targets: w.inner, scale: 1.35, duration: 250, ease: 'Back.easeOut' });
+  tone(150, 0.6, 'sawtooth', -50);
+  s.time.delayedCall(350, () => {
+    gulp(victim);
+    s.time.delayedCall(700, () => {
+      s.tweens.add({ targets: w.inner, scale: 1, duration: 300, ease: 'Sine.easeOut' });
+      if (IMG[backKey]) w.setEmoji(backKey); else if (backKey === '🐺👒') nightcap(w);
+      then();
+    });
+  });
+}
+
+/* 침대에 누워 자는 늑대 (그림이 없으면 침대 위 늑대 이모지) */
+function sleepingWolf(s: Parameters<Page['play']>[0]) {
+  return IMG['🐺쿨쿨'] ? s.actor('🐺쿨쿨', 0.47, ONBED - 0.02, { size: 190 }) : s.actor('🐺', 0.52, ONBED, { size: 173 });
+}
 
 export const HOOD: Page[] = [
   {
@@ -85,16 +111,20 @@ export const HOOD: Page[] = [
         if (n < 3) return;
         door.untap();
         s.lines([[gm, '빨간 모자구나! 문 열려 있단다~', 'grandma']], () => {
-          w.walkTo(0.4);
-          s.delay(1100, () => s.lines([[gm, '앗, 늑대다!', 'grandma'], [w, '꿀꺽!', 'wolf']], () => {
-            gulp(gm);
-            s.delay(500, () => {
-              w.walkTo(0.54);
-              s.tweens.add({ targets: w, y: H * (1 - ONBED), duration: 1000, ease: 'Sine.easeInOut' });
-              nightcap(w);
-              s.delay(1000, done);
-            });
-          }));
+          // 침대 옆으로 돌아가서, 왼쪽(할머니 쪽)을 보고 꿀꺽
+          w.walkTo(0.7, 1400);
+          s.delay(1500, () => {
+            pose(w, '🐺');
+            s.lines([[gm, '앗, 늑대다!', 'grandma'], [w, '꿀꺽!', 'wolf']]);
+            s.delay(1800, () => wolfGulp(w, '🐺꿀꺽', '🐺', gm, () => {
+              s.delay(400, () => {
+                w.walkTo(0.54);
+                s.tweens.add({ targets: w, y: H * (1 - ONBED), duration: 1000, ease: 'Sine.easeInOut' });
+                nightcap(w);
+                s.delay(1000, done);
+              });
+            }));
+          });
         });
       });
     },
@@ -121,8 +151,8 @@ export const HOOD: Page[] = [
           b.untap().anim('none'); sfx.tap();
           s.lines([[g, QA[i][1], 'girl'], [w, QA[i][2], 'wolf']], () => {
             if (i < 2) return ask(i + 1);
-            w.anim('shake'); tone(150, 0.6, 'sawtooth', -50);
-            s.lines([[w, '꿀꺽!', 'wolf']], () => { gulp(g); s.delay(800, done); });
+            s.lines([[w, '꿀꺽!', 'wolf']]);
+            s.delay(600, () => wolfGulp(w, '🐺👒꿀꺽', '🐺👒', g, () => s.delay(600, done)));
           });
         });
       };
@@ -137,7 +167,7 @@ export const HOOD: Page[] = [
     play: (s, done) => {
       s.room();
       s.actor('🛏️', 0.48, 0.08, BED);
-      const w = s.actor('🐺', 0.52, ONBED, { size: 173 });
+      const w = sleepingWolf(s);
       s.showBubble(w, '드르렁~ 쿨쿨 💤', 99999);
       s.actor('🤠', 0.06, 0.12);
       const sc = s.item('✂️', 0.34, 0.4).anim('tapme');
@@ -159,17 +189,28 @@ export const HOOD: Page[] = [
     after: '잠에서 깬 늑대는 허둥지둥 달아나다 쿵! 넘어져서 다시는 오지 않았대요.',
     play: (s, done) => {
       s.room();
-      const w = s.actor('🐺', 0.54, 0.14, { size: 180 });
+      s.actor('🛏️', 0.48, 0.08, BED);
+      const w = sleepingWolf(s);
+      const snore = s.showBubble(w, '드르렁~ 💤', 99999);
       s.actor('🤠', 0.02, 0.1); s.girl(0.14, 0.1); s.actor('👵', 0.26, 0.1);
-      s.tapItems([['🪨', 0.4, 0.4], ['🪨', 0.8, 0.34], ['🪨', 0.88, 0.56]],
-        () => { tone(120, 0.2, 'square', -40); w.anim('shake'); },
-        () => s.lines([[w, '아이고 배야! 왜 이렇게 무겁지?', 'wolf']], () => {
-          w.anim('none').setEmoji('🐺', true).walkTo(0.78, 2400, 'Quad.easeIn');
+      s.tapItems([['🪨', 0.36, 0.4], ['🪨', 0.82, 0.3], ['🪨', 0.88, 0.52]],
+        i => {
+          // 돌이 들어갈 때마다 배가 점점 불러요
+          tone(120, 0.2, 'square', -40);
+          pose(w, `🐺배${i + 1}`);
+          const k = 1 + 0.04 * (i + 1);   // 그림이 바뀌는 것에 더해 조금씩 더 커져요
+          s.tweens.add({ targets: w.inner, scaleY: { from: k * 0.9, to: k }, scaleX: { from: k * 1.08, to: k }, duration: 450, ease: 'Back.easeOut' });
+        },
+        () => s.delay(700, () => s.lines([[w, '아이고 배야! 왜 이렇게 무겁지?', 'wolf']], () => {
+          // 잠에서 깨 일어나, 무거운 배를 안고 오른쪽으로 허둥지둥
+          snore.destroy();
+          w.y = H * 0.86;
+          w.anim('none').setEmoji(IMG['🐺무거워'] ? '🐺무거워' : '🐺', true).walkTo(0.64, 2400, 'Quad.easeIn');
           s.delay(2300, () => {
             s.tweens.add({ targets: w.inner, angle: 90, duration: 500 });
             tone(90, 0.5, 'square', -40); s.showBubble(w, '쿵!', 1200); s.delay(1000, done);
           });
-        }));
+        })));
     },
   },
   {
