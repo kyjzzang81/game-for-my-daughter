@@ -40,6 +40,20 @@
     "pig3": {
       "voice_id": "tc_699d27b557c86e3f4249c051",
       "name": "Okji (여, 어린이)"
+    },
+    "tiger": {
+      "voice_id": "tc_63a3d9d14b235ddd6541a78e",
+      "name": "학철 (남, 노년, 게임)",
+      "pitch": -3
+    },
+    "boy": {
+      "voice_id": "tc_6a98d65b0402016f616a7ac3",
+      "name": "준우 (남, 어린이, 애니)"
+    },
+    "sis": {
+      "voice_id": "tc_699d27d2f197c861791ac91b",
+      "name": "부꾸 (여, 어린이)",
+      "pitch": 1
     }
   }
 }

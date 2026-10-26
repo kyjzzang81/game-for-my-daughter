@@ -6,6 +6,7 @@ import { playMusic } from '../audio/music';
 import { UI_LINES } from '../stories/ui-lines';
 import { HOOD } from '../stories/hood';
 import { PIGS } from '../stories/pigs';
+import { SUNMOON } from '../stories/sunmoon';
 
 export class SelectScene extends Phaser.Scene {
   constructor() { super('select'); }
@@ -18,7 +19,7 @@ export class SelectScene extends Phaser.Scene {
 
     this.card(W / 2 - 290, 'cover-pigs', '🐷🐺', '아기 돼지 삼형제', 'play', () => this.scene.start('story', { pages: PIGS }));
     this.card(W / 2, 'cover-hood', '👧🧺', '빨간 모자', 'play', () => this.scene.start('story', { pages: HOOD }));
-    this.card(W / 2 + 290, 'cover-sunmoon', '☀️🌙', '해님 달님', 'lock', () => { tone(300, 0.2, 'triangle'); say(UI_LINES.soon); });
+    this.card(W / 2 + 290, 'cover-sunmoon', '☀️🌙', '해님 달님', 'play', () => this.scene.start('story', { pages: SUNMOON }));
   }
 
   /* 표지 그림 (없으면 이모지) */

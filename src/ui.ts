@@ -18,7 +18,7 @@ export const markLoaded = (name: string) => LOADED.add(name);
 export const tex = (name: string) => (LOADED.has(name) ? `img-${name}` : undefined);
 
 /* 배경. 그림이 있으면 그림, 없으면 하늘·풀밭·해·구름·꽃을 직접 그려요 */
-export type Bg = 'meadow' | 'forest' | 'room';
+export type Bg = 'meadow' | 'forest' | 'room' | 'mountain' | 'hanok' | 'well' | 'sky';
 export function backdrop(s: Phaser.Scene, kind: Bg = 'meadow') {
   const c = s.add.container();
   const t = tex(`bg-${kind}`);
@@ -26,6 +26,11 @@ export function backdrop(s: Phaser.Scene, kind: Bg = 'meadow') {
   const g = s.add.graphics();
   c.add(g);
   if (kind === 'room') { g.fillStyle(0xffe9d6).fillRect(0, 0, W, H * 0.62).fillStyle(0xc99a6b).fillRect(0, H * 0.62, W, H * 0.38); return c; }
+  if (kind === 'hanok' || kind === 'well' || kind === 'sky') {   // 밤 장면
+    g.fillGradientStyle(0x1d2b5c, 0x1d2b5c, 0x3c4f8f, 0x3c4f8f).fillRect(0, 0, W, kind === 'sky' ? H : H * 0.62);
+    if (kind !== 'sky') g.fillStyle(0x3d6b3a).fillRect(0, H * 0.62, W, H * 0.38);
+    return c;
+  }
   g.fillGradientStyle(0xaee3ff, 0xaee3ff, 0xdff5ff, 0xdff5ff).fillRect(0, 0, W, H * 0.6);
   g.fillGradientStyle(0x8fd46b, 0x8fd46b, 0x6fbf4f, 0x6fbf4f).fillRect(0, H * 0.6, W, H * 0.4);
 

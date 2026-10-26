@@ -3,7 +3,7 @@
    없는 대사는 브라우저 speechSynthesis로 읽어요. */
 import { duck } from './music';
 
-export type Who = 'narr' | 'pig1' | 'pig2' | 'pig3' | 'wolf' | 'girl' | 'mom' | 'grandma' | 'man';
+export type Who = 'narr' | 'pig1' | 'pig2' | 'pig3' | 'wolf' | 'girl' | 'mom' | 'grandma' | 'man' | 'tiger' | 'boy' | 'sis';
 export interface Line { t: string; who: Who | `${Who}L`; onstart?: () => void; onend?: () => void }
 
 const HAS_TTS = typeof window !== 'undefined' && 'speechSynthesis' in window;
@@ -16,6 +16,7 @@ const VOICES: Record<Who, { pitch: number; rate: number }> = {
   narr: { pitch: 1.15, rate: 0.85 }, pig1: { pitch: 1.3, rate: 0.9 }, pig2: { pitch: 1.65, rate: 1 }, pig3: { pitch: 2, rate: 1.15 },
   wolf: { pitch: 0.3, rate: 0.75 }, girl: { pitch: 1.45, rate: 1 }, mom: { pitch: 1.2, rate: 0.9 },
   grandma: { pitch: 0.85, rate: 0.8 }, man: { pitch: 0.7, rate: 0.9 },
+  tiger: { pitch: 0.4, rate: 0.8 }, boy: { pitch: 1.35, rate: 1.05 }, sis: { pitch: 1.6, rate: 1.1 },
 };
 
 /* 대사 파일 이름: 생성 스크립트와 똑같이 계산해야 해요 (FNV-1a 해시) */

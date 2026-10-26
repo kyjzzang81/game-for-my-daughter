@@ -22,12 +22,14 @@ function mockScene(taps, anywhere, later) {
     get: (_, k) => {
       if (k === 'tap') return fn => { taps.push(fn); return act; };
       if (k === 'center') return () => [0, 0];
-      if (k === 'inner' || k === 'scene') return any;
+      if (k === 'scene') return s;
+      if (k === 'inner' || k === 'label') return any;
       return () => act;
     },
   });
   let act = actor();
-  const s = new Proxy({}, {
+  let s;
+  s = new Proxy({}, {
     get: (_, k) => ({
       actor: () => (act = actor()), girl: () => (act = actor()), item: () => (act = actor()),
       guard: fn => fn,
@@ -36,6 +38,9 @@ function mockScene(taps, anywhere, later) {
       bubble: (_a, t, _ms, who) => { if (who) talkHook([{ t, who }]); },
       tapItems: (spots, onTap, onAll) => { spots.forEach(([e], i) => onTap(i, e)); onAll(); },
       tapAnywhere: fn => anywhere.push(fn),
+      // 애니메이션이 끝난 뒤에 나오는 대사도 모으려고, 끝 콜백을 미뤄 둔 일로 실행해요
+      tweens: { add: cfg => { if (cfg.onComplete) later.push(cfg.onComplete); return any; }, killTweensOf: () => {} },
+      time: { delayedCall: (_ms, fn) => later.push(fn) },
     })[k] ?? any,
   });
   return s;
@@ -54,6 +59,7 @@ export async function collectLines() {
     const stories = {
       hood: (await server.ssrLoadModule('/src/stories/hood.ts')).HOOD,
       pigs: (await server.ssrLoadModule('/src/stories/pigs.ts')).PIGS,
+      sunmoon: (await server.ssrLoadModule('/src/stories/sunmoon.ts')).SUNMOON,
     };
     const out = new Map();   // key → { who, t, story, page }
     let where = {};

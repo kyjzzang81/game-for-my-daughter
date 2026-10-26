@@ -349,6 +349,148 @@
         "wolf"
       ],
       "prompt": "The same sly gray wolf as the reference, blowing as hard as he can: cheeks puffed up huge and round, lips pushed out, eyes squeezed shut with effort, leaning forward with arms back, a few small wind lines coming out of his mouth. The wolf faces and looks toward the viewer's LEFT side of the image (snout pointing left)."
+    },
+    "sm-mom": {
+      "kind": "sprite",
+      "emoji": "👩떡",
+      "ref": [
+        "girl"
+      ],
+      "prompt": "A kind Korean mother in a simple traditional white and indigo hanbok with a white headscarf, carrying a round basket of rice cakes on her head with one hand, warm smile, standing. Traditional Korean folktale setting (Joseon era countryside). Same clay style and proportions as the reference."
+    },
+    "sm-boy": {
+      "kind": "sprite",
+      "emoji": "👦오빠",
+      "ref": [
+        "girl"
+      ],
+      "prompt": "A brave little Korean boy about 8 years old in a light blue traditional hanbok jacket and pants, hair tied in a small topknot, determined friendly face, standing. Traditional Korean folktale setting (Joseon era countryside). Same clay style and proportions as the reference."
+    },
+    "sm-sis": {
+      "kind": "sprite",
+      "emoji": "👧동생",
+      "ref": [
+        "sm-boy"
+      ],
+      "prompt": "His little sister about 5 years old in a pink and yellow traditional hanbok with a long braided pigtail and a red ribbon, round cheeks, a little shy, standing. Same face style, clay style and proportions as the reference boy."
+    },
+    "tiger": {
+      "kind": "sprite",
+      "emoji": "🐯",
+      "ref": [
+        "wolf"
+      ],
+      "prompt": "A big greedy cartoon Korean tiger standing on two legs, orange with black stripes, sly hungry grin with small fangs, big paws, long striped tail. Scary-funny for preschoolers, not gory. Facing and looking toward the viewer's LEFT side of the image. Same clay style as the reference."
+    },
+    "tiger-dressed": {
+      "kind": "sprite",
+      "emoji": "🐯엄마옷",
+      "ref": [
+        "tiger",
+        "sm-mom"
+      ],
+      "prompt": "The same tiger as the first reference, clumsily disguised in the mother's clothes from the second reference: white headscarf and indigo hanbok skirt that is too small, striped tail sticking out from under the skirt, sneaky grin, standing. Facing and looking toward the viewer's LEFT side of the image."
+    },
+    "tiger-slip": {
+      "kind": "sprite",
+      "emoji": "🐯미끌",
+      "ref": [
+        "tiger-dressed"
+      ],
+      "prompt": "The same disguised tiger as the reference, slipping and sliding down with arms and legs flailing, shocked funny face, little sweat drops, oily shine on his paws. Facing and looking toward the viewer's LEFT side of the image."
+    },
+    "tiger-axe": {
+      "kind": "sprite",
+      "emoji": "🐯도끼",
+      "ref": [
+        "tiger-dressed"
+      ],
+      "prompt": "The same disguised tiger as the reference, holding a small wooden-handled axe up, looking up with a determined sly grin, as if climbing a tree. Facing and looking toward the viewer's LEFT side of the image. Cartoonish, not violent."
+    },
+    "tiger-fall": {
+      "kind": "sprite",
+      "emoji": "🐯쿵",
+      "ref": [
+        "tiger-dressed"
+      ],
+      "prompt": "The same disguised tiger as the reference, landing on his bottom with a bump, dizzy swirly eyes, little stars circling his head, headscarf askew, funny and not hurt. Facing and looking toward the viewer's LEFT side of the image."
+    },
+    "tiger-paw": {
+      "kind": "sprite",
+      "emoji": "🐾",
+      "ref": [
+        "tiger"
+      ],
+      "prompt": "One big fluffy orange tiger paw with black stripes and soft pink paw pads, reaching out, seen from the side. Same clay style as the reference."
+    },
+    "tteok": {
+      "kind": "sprite",
+      "emoji": "🍡떡",
+      "prompt": "Three soft Korean rice cakes (songpyeon) in pastel pink, white and green, stacked together."
+    },
+    "rope": {
+      "kind": "sprite",
+      "emoji": "🪢",
+      "size": "1024x1536",
+      "prompt": "A long thick sturdy golden braided rope hanging straight down vertically, glowing softly with tiny sparkles."
+    },
+    "rope-rotten": {
+      "kind": "sprite",
+      "emoji": "🪢썩은",
+      "size": "1024x1536",
+      "prompt": "A long old frayed rotten brown rope hanging straight down vertically, thin and patchy with loose fibers sticking out, looking weak."
+    },
+    "sun-boy": {
+      "kind": "sprite",
+      "emoji": "☀️오빠",
+      "ref": [
+        "sm-boy"
+      ],
+      "prompt": "A glowing smiling sun with golden rays whose round face is the face of the boy from the reference, with his topknot on top. Cute clay style."
+    },
+    "moon-sis": {
+      "kind": "sprite",
+      "emoji": "🌙동생",
+      "ref": [
+        "sm-sis"
+      ],
+      "prompt": "A soft glowing pale yellow crescent moon whose face is the face of the little girl from the reference with her braided pigtail and red ribbon, looking a little scared. Cute clay style."
+    },
+    "sun-sis": {
+      "kind": "sprite",
+      "emoji": "☀️동생",
+      "ref": [
+        "sm-sis"
+      ],
+      "prompt": "A bright glowing smiling sun with golden rays whose round face is the face of the little girl from the reference with her braided pigtail and red ribbon, happy and brave. Cute clay style."
+    },
+    "moon-boy": {
+      "kind": "sprite",
+      "emoji": "🌙오빠",
+      "ref": [
+        "sm-boy"
+      ],
+      "prompt": "A calm glowing pale yellow crescent moon whose face is the face of the boy from the reference with his topknot, gentle proud smile, a few little stars around. Cute clay style."
+    },
+    "bg-mountain": {
+      "kind": "bg",
+      "size": "1536x1024",
+      "prompt": "A winding mountain pass at sunset: layered rounded green and blue mountains, a dirt path crossing the hills, pine trees at the left and right edges, warm orange sky. Traditional Korean folktale setting (Joseon era countryside)."
+    },
+    "bg-hanok": {
+      "kind": "bg",
+      "size": "1536x1024",
+      "prompt": "Outside a small thatched-roof Korean cottage (choga-jip) at night: deep blue starry sky, warm light glowing through the paper window, a stone wall and a clay jar terrace near the edges, the wooden front door area in the left-center left open, dirt yard in the lower 38 percent. Traditional Korean folktale setting (Joseon era countryside)."
+    },
+    "bg-well": {
+      "kind": "bg",
+      "size": "1536x1024",
+      "prompt": "A village yard at night: a round stone well on the left third, a big tall old tree on the right half with a thick trunk and wide branches reaching high, deep blue starry sky, grassy ground in the lower 35 percent. Traditional Korean folktale setting (Joseon era countryside)."
+    },
+    "bg-sky": {
+      "kind": "bg",
+      "size": "1536x1024",
+      "prompt": "High up in the sky at twilight: soft puffy clay clouds in the lower half, a gradient from deep blue at the top to soft pink near the clouds, many tiny twinkling stars, open space in the middle."
     }
   }
 }

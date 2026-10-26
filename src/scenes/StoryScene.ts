@@ -221,7 +221,7 @@ export class StoryScene extends Phaser.Scene {
     this.killDeep(this.bgLayer);
     this.bgLayer.removeAll(true);
     this.bgLayer.add(backdrop(this, kind));
-    playMusic(kind);
+    playMusic(({ mountain: 'forest', hanok: 'night', well: 'night', sky: 'night' } as const)[kind as 'mountain'] ?? kind);
   }
 
   /* 숲. 숲 배경 그림이 없으면 나무를 세워요 */
