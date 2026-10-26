@@ -1,0 +1,285 @@
+{
+  "_설명": "게임 그림 목록. key는 파일 이름, emoji는 게임에서 이 그림으로 바꿔 그릴 이모지(없으면 코드에서 key로 씀). kind: sprite(투명 캐릭터·소품) / ui(투명 버튼) / bg(배경). ref는 그림체·생김새를 맞출 때 참고할 그림. size는 생성 크기. flop: true면 좌우를 뒤집어요(게임은 캐릭터가 왼쪽을 본다고 가정)",
+  "model": "gpt-image-1.5",
+  "style": {
+    "sprite": "Style: cute handmade 3D clay figure for a preschool picture book app, plasticine texture with subtle fingerprints, soft rounded shapes, warm soft studio lighting, gentle pastel colors. One single object, centered, whole object visible with generous empty margin, no ground, no cast shadow, no text, isolated on a fully transparent background.",
+    "ui": "Style: chunky glossy 3D clay game button for a preschool app, soft rounded shapes, plasticine texture, soft studio lighting, pastel colors. Single button centered with empty margin, no text or letters, no shadow on the ground, isolated on a fully transparent background.",
+    "bg": "Style: handmade 3D clay diorama background for a preschool picture book app, plasticine texture, soft rounded shapes, warm soft lighting, gentle pastel colors, shallow depth of field. Wide landscape view, no characters, no animals, no text. Keep the center and lower middle open and uncluttered so characters can stand there."
+  },
+  "images": {
+    "girl": {
+      "kind": "sprite",
+      "emoji": "👧",
+      "prompt": "A little girl about 6 years old wearing a bright red hooded cape with the hood up, round rosy cheeks, big friendly eyes, short brown hair peeking out, simple blue dress, standing."
+    },
+    "mom": {
+      "kind": "sprite",
+      "emoji": "👩",
+      "ref": [
+        "girl"
+      ],
+      "prompt": "The girl's kind young mother with brown hair in a bun, wearing a yellow apron over a green dress, warm smile, standing. Same clay style and proportions as the reference."
+    },
+    "grandma": {
+      "kind": "sprite",
+      "emoji": "👵",
+      "ref": [
+        "girl"
+      ],
+      "prompt": "A sweet grandmother with a gray hair bun, small round glasses, lavender shawl over a long dress, gentle smile, standing. Same clay style and proportions as the reference."
+    },
+    "hunter": {
+      "kind": "sprite",
+      "emoji": "🤠",
+      "ref": [
+        "girl"
+      ],
+      "prompt": "A friendly forest woodsman with a big brown beard, green felt hat with a feather, brown vest, rolled sleeves, no weapons, cheerful smile, standing. Same clay style and proportions as the reference."
+    },
+    "wolf": {
+      "kind": "sprite",
+      "emoji": "🐺",
+      "ref": [
+        "girl"
+      ],
+      "prompt": "A sly but goofy cartoon gray wolf standing on two legs, big pointy ears, bushy tail, mischievous grin, not scary, body turned toward the viewer's left. Same clay style as the reference.",
+      "flop": true
+    },
+    "wolf-nightcap": {
+      "kind": "sprite",
+      "emoji": "🐺👒",
+      "ref": [
+        "wolf"
+      ],
+      "prompt": "The same gray wolf as the reference, now disguised as a grandmother: wearing a frilly white nightcap, small round glasses, and a pink flowery nightgown, sitting up, sneaky grin, body turned toward the viewer's left.",
+      "flop": true
+    },
+    "pig1": {
+      "kind": "sprite",
+      "emoji": "🐷1",
+      "ref": [
+        "girl"
+      ],
+      "prompt": "A little pink piglet, the oldest of three brothers, standing on two legs, wearing a straw hat and blue overalls, happy smile. Same clay style as the reference."
+    },
+    "pig2": {
+      "kind": "sprite",
+      "emoji": "🐷2",
+      "ref": [
+        "pig1"
+      ],
+      "prompt": "Another little pink piglet brother with the exact same face and body as the reference pig, slightly smaller, wearing a red cap and a green t-shirt, no hat, happy smile, standing on two legs."
+    },
+    "pig3": {
+      "kind": "sprite",
+      "emoji": "🐷3",
+      "ref": [
+        "pig1"
+      ],
+      "prompt": "The youngest little pink piglet brother with the exact same face as the reference pig, smallest and roundest, wearing a yellow builder's hard hat and orange overalls, no straw hat, big happy smile, standing on two legs."
+    },
+    "bunny": {
+      "kind": "sprite",
+      "emoji": "🐰",
+      "ref": [
+        "pig1"
+      ],
+      "prompt": "A cute little white bunny with long ears, sitting, happy face. Same clay style as the reference."
+    },
+    "bear": {
+      "kind": "sprite",
+      "emoji": "🐻",
+      "ref": [
+        "pig1"
+      ],
+      "prompt": "A cute little brown bear cub, sitting, happy face. Same clay style as the reference."
+    },
+    "basket": {
+      "kind": "sprite",
+      "emoji": "🧺",
+      "prompt": "A small empty-looking woven wicker picnic basket with a handle on top and a folded red and white checkered cloth peeking out. Only the basket and cloth, nothing else inside, no toys, no animals."
+    },
+    "bread": {
+      "kind": "sprite",
+      "emoji": "🍞",
+      "prompt": "A small loaf of golden brown bread."
+    },
+    "cookie": {
+      "kind": "sprite",
+      "emoji": "🍪",
+      "prompt": "A round chocolate chip cookie."
+    },
+    "cupcake": {
+      "kind": "sprite",
+      "emoji": "🧁",
+      "prompt": "A cupcake with pink frosting and a cherry on top in a striped paper cup."
+    },
+    "tulip": {
+      "kind": "sprite",
+      "emoji": "🌷",
+      "prompt": "A single pink tulip flower with a green stem and two leaves."
+    },
+    "daisy": {
+      "kind": "sprite",
+      "emoji": "🌼",
+      "prompt": "A single yellow daisy flower with a green stem."
+    },
+    "blossom": {
+      "kind": "sprite",
+      "emoji": "🌸",
+      "prompt": "A single pink cherry blossom flower with five round petals."
+    },
+    "sunflower": {
+      "kind": "sprite",
+      "emoji": "🌻",
+      "prompt": "A single bright sunflower with a green stem and leaves."
+    },
+    "bouquet": {
+      "kind": "sprite",
+      "emoji": "💐",
+      "prompt": "A small bouquet of colorful wildflowers with green stems tied together with a pink ribbon bow. Only flowers, stems and ribbon, no hands, no gloves, no vase."
+    },
+    "pine": {
+      "kind": "sprite",
+      "emoji": "🌲",
+      "size": "1024x1536",
+      "prompt": "A tall cute pine tree with layered rounded green tiers and a short brown trunk."
+    },
+    "tree": {
+      "kind": "sprite",
+      "emoji": "🌳",
+      "size": "1024x1536",
+      "prompt": "A cute round leafy green tree with a short brown trunk."
+    },
+    "door": {
+      "kind": "sprite",
+      "emoji": "🚪",
+      "size": "1024x1536",
+      "prompt": "A rounded-top wooden cottage door seen straight from the front, with a small window and a brass knob, standing upright."
+    },
+    "bed": {
+      "kind": "sprite",
+      "emoji": "🛏️",
+      "size": "1536x1024",
+      "prompt": "A cozy wooden bed seen from the side with a fluffy white pillow on the left and a patchwork quilt, headboard on the left."
+    },
+    "ear": {
+      "kind": "sprite",
+      "emoji": "👂",
+      "prompt": "A cartoon ear shape, peach colored."
+    },
+    "eyes": {
+      "kind": "sprite",
+      "emoji": "👀",
+      "prompt": "A pair of big round cartoon eyes looking to the side."
+    },
+    "mouth": {
+      "kind": "sprite",
+      "emoji": "👄",
+      "prompt": "A cartoon open mouth with red lips showing white teeth."
+    },
+    "scissors": {
+      "kind": "sprite",
+      "emoji": "✂️",
+      "prompt": "A pair of child-safe scissors with round blue handles and rounded tips."
+    },
+    "rock": {
+      "kind": "sprite",
+      "emoji": "🪨",
+      "prompt": "A smooth round gray rock."
+    },
+    "straw": {
+      "kind": "sprite",
+      "emoji": "🌾",
+      "prompt": "A small bundle of golden straw tied in the middle with twine."
+    },
+    "log": {
+      "kind": "sprite",
+      "emoji": "🪵",
+      "prompt": "A short cut wooden log lying on its side showing tree rings."
+    },
+    "brick": {
+      "kind": "sprite",
+      "emoji": "🧱",
+      "prompt": "A small stack of three red bricks."
+    },
+    "wind": {
+      "kind": "sprite",
+      "emoji": "💨",
+      "prompt": "A swirly puff of wind made of light blue-white clay swirls, blowing toward the right."
+    },
+    "house-straw": {
+      "kind": "sprite",
+      "size": "1536x1024",
+      "prompt": "A small cute cottage made of golden straw bundles with a straw roof, a round wooden door and two small windows, seen from the front."
+    },
+    "house-wood": {
+      "kind": "sprite",
+      "size": "1536x1024",
+      "prompt": "A small cute cottage made of brown wooden planks with a wooden shingle roof, a round door and two small windows, seen from the front."
+    },
+    "house-brick": {
+      "kind": "sprite",
+      "size": "1536x1024",
+      "prompt": "A small sturdy cottage made of red bricks with a purple roof, a chimney, a round door and two small windows, seen from the front."
+    },
+    "bg-meadow": {
+      "kind": "bg",
+      "size": "1536x1024",
+      "prompt": "A sunny open meadow: soft blue sky with a few puffy clouds and a round sun in the upper right, rolling green grass covering the lower 40 percent, small flowers and bushes only near the left and right edges."
+    },
+    "bg-forest": {
+      "kind": "bg",
+      "size": "1536x1024",
+      "prompt": "A friendly forest clearing with a winding dirt path: rounded green trees and pine trees along the left and right sides, soft sky peeking through at the top, grassy ground in the lower 40 percent with a few flowers near the edges."
+    },
+    "bg-room": {
+      "kind": "bg",
+      "size": "1536x1024",
+      "prompt": "Inside a cozy grandmother's cottage: cream colored wall with a small round window with curtains near the top center, warm wooden plank floor covering the lower 38 percent, a small rug, a picture frame and a shelf near the edges, nothing in the middle."
+    },
+    "btn-home": {
+      "kind": "ui",
+      "prompt": "A round white clay button with a small cute house icon in the middle."
+    },
+    "btn-back": {
+      "kind": "ui",
+      "prompt": "A round white clay button with a chunky orange arrow pointing left in the middle."
+    },
+    "btn-sound": {
+      "kind": "ui",
+      "prompt": "A round white clay button with a cute blue speaker icon with sound waves in the middle."
+    },
+    "btn-next": {
+      "kind": "ui",
+      "prompt": "A big round pink clay button with a chunky white arrow pointing right in the middle."
+    },
+    "btn-start": {
+      "kind": "ui",
+      "size": "1536x1024",
+      "prompt": "A wide horizontal pill-shaped yellow clay button with a slightly darker yellow bottom edge, completely blank with no icon and no text."
+    },
+    "cover-pigs": {
+      "kind": "sprite",
+      "ref": [
+        "pig1",
+        "pig2",
+        "pig3",
+        "wolf"
+      ],
+      "prompt": "A storybook cover vignette: the three little piglet brothers from the references standing together in front of a small brick house, the gray wolf peeking from the side. Same characters and clay style as the references."
+    },
+    "cover-hood": {
+      "kind": "sprite",
+      "ref": [
+        "girl",
+        "wolf"
+      ],
+      "prompt": "A storybook cover vignette: the little girl in the red hood from the reference walking with a basket on a forest path, the gray wolf from the reference peeking from behind a tree. Same characters and clay style as the references."
+    },
+    "cover-sunmoon": {
+      "kind": "sprite",
+      "prompt": "A storybook cover vignette: a smiling clay sun and a smiling crescent moon side by side above a small rope ladder, soft pastel colors."
+    }
+  }
+}
