@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import { W, H, txt, backdrop, pillButton, visual } from '../ui';
 import { sfx, unlockAudio } from '../audio/sfx';
 import { say } from '../audio/voice';
+import { playMusic } from '../audio/music';
+import { UI_LINES } from '../stories/ui-lines';
 
 export class HomeScene extends Phaser.Scene {
   constructor() { super('home'); }
@@ -16,7 +18,7 @@ export class HomeScene extends Phaser.Scene {
     this.tweens.add({ targets: title, y: title.y - 10, duration: 1200, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
     txt(this, W / 2, H * 0.62, '이야기 속으로 놀러 가요!', 30).setOrigin(0.5);
     pillButton(this, W / 2, H * 0.78, '▶ 시작하기', () => {
-      unlockAudio(); sfx.pop(); say('어떤 이야기를 볼까?');
+      unlockAudio(); sfx.pop(); playMusic('meadow'); say(UI_LINES.pick);
       this.scene.start('select');
     });
   }

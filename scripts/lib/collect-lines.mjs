@@ -75,6 +75,10 @@ export async function collectLines() {
         }
       });
     }
+    // 홈·선택 화면 내레이션
+    const { UI_LINES } = await server.ssrLoadModule('/src/stories/ui-lines.ts');
+    where = { story: 'ui', page: 0 };
+    Object.values(UI_LINES).forEach(t => voice.say(t));
     // 무작위로 고르는 대사(꽃 꺾을 때)는 위에서 일부만 나올 수 있어서 따로 넣어요
     for (const t of ['예쁘다!', '향기 좋아!', '와아!']) out.set(voice.voiceKey('girl', t), { who: 'girl', t, story: 'hood', page: 2 });
     return [...out.entries()].map(([key, v]) => ({ key, ...v }));

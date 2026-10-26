@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { IMG, markLoaded } from '../ui';
+import { loadVoices } from '../audio/voice';
 
 interface Manifest { files: Record<string, string>; emoji: Record<string, string> }
 
@@ -9,7 +10,8 @@ export class BootScene extends Phaser.Scene {
 
   preload() { this.load.json('imgs', 'assets/img/manifest.json'); }
 
-  create() {
+  async create() {
+    await loadVoices();
     const m: Manifest = this.cache.json.get('imgs') ?? { files: {}, emoji: {} };
     Object.entries(m.files).forEach(([name, file]) => this.load.image(`img-${name}`, `assets/img/${file}`));
     this.load.once('complete', () => {

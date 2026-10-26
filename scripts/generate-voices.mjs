@@ -2,6 +2,7 @@
    node scripts/generate-voices.mjs                         → 모든 대사
    node scripts/generate-voices.mjs --story hood --page 0   → 한 장면만
    node scripts/generate-voices.mjs --redo                  → 연출을 바꿨을 때 전부 다시
+   node scripts/generate-voices.mjs --who narr --redo       → 한 사람 대사만 다시
    이미 만든 파일은 건너뛰어서 다시 돌려도 비용이 들지 않아요.
    연기 톤(감정·세기·빠르기)은 scripts/direction.json에서 대사마다 정해요. */
 import { readFileSync, writeFileSync, existsSync, readdirSync, unlinkSync } from 'node:fs';
@@ -18,6 +19,7 @@ const all = await collectLines();
 let lines = all;
 if (arg('story')) lines = lines.filter(l => l.story === arg('story'));
 if (arg('page') != null) lines = lines.filter(l => l.page === Number(arg('page')));
+if (arg('who')) lines = lines.filter(l => l.who === arg('who'));
 
 // 대사를 고치면 예전 파일이 남으니, 게임에서 더는 안 쓰는 파일은 지워요
 const used = new Set(all.map(l => l.key));

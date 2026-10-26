@@ -1,6 +1,8 @@
 /* 내레이션과 등장인물 목소리.
    scripts/generate-voices.mjs로 만든 타입캐스트 mp3가 있으면 그걸 틀고,
    없는 대사는 브라우저 speechSynthesis로 읽어요. */
+import { duck } from './music';
+
 export type Who = 'narr' | 'pig1' | 'pig2' | 'pig3' | 'wolf' | 'girl' | 'mom' | 'grandma' | 'man';
 export interface Line { t: string; who: Who | `${Who}L`; onstart?: () => void; onend?: () => void }
 
@@ -23,10 +25,14 @@ export function voiceKey(who: string, text: string) {
   return `${who}-${h.toString(16).padStart(8, '0')}`;
 }
 
-let recorded: Set<string> | null = null;
-if (typeof window !== 'undefined') {
-  fetch('assets/voice/manifest.json').then(r => (r.ok ? r.json() : [])).then((keys: string[]) => { recorded = new Set(keys); })
-    .catch(() => { recorded = new Set(); });
+/* 만들어 둔 대사 목록. 게임 시작 전에 BootScene이 불러와요
+   (목록이 오기 전에 말하면 브라우저 음성으로 나가 버려서) */
+let recorded = new Set<string>();
+export async function loadVoices() {
+  try {
+    const r = await fetch('assets/voice/manifest.json');
+    if (r.ok) recorded = new Set(await r.json());
+  } catch { /* 목록이 없으면 브라우저 음성으로 읽어요 */ }
 }
 
 /* 생성 스크립트가 게임을 흉내 내며 모든 대사를 모을 때 씁니다 */
@@ -36,7 +42,7 @@ export const voiceHooks: { record: ((l: Line) => void) | null } = { record: null
 let audio: HTMLAudioElement | null = null;
 function speakOne(l: Line, done: () => void) {
   const key = voiceKey(l.who, l.t);
-  if (recorded?.has(key)) {
+  if (recorded.has(key)) {
     audio = new Audio(`assets/voice/${key}.mp3`);
     audio.onended = audio.onerror = done;
     audio.play().catch(done);
@@ -59,8 +65,9 @@ let run = 0;
 function pump(r: number) {
   if (r !== run) return;
   const l = buf.shift();
-  if (!l) { busy = false; return; }
+  if (!l) { busy = false; duck(false); return; }
   busy = true;
+  duck(true);
   l.onstart?.();
   let fired = false;
   speakOne(l, () => { if (fired || r !== run) return; fired = true; l.onend?.(); pump(r); });
@@ -74,7 +81,7 @@ export function talk(lines: Line[], queue = false) {
 }
 
 export function stopTalk() {
-  run++; buf = []; busy = false;
+  run++; buf = []; busy = false; duck(false);
   if (audio) { audio.onended = audio.onerror = null; audio.pause(); audio = null; }
   if (HAS_TTS) speechSynthesis.cancel();
 }

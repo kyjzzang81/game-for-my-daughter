@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import { W, H, txt, backdrop, iconButton, tex } from '../ui';
 import { sfx, tone } from '../audio/sfx';
 import { say } from '../audio/voice';
+import { playMusic } from '../audio/music';
+import { UI_LINES } from '../stories/ui-lines';
 import { HOOD } from '../stories/hood';
 import { PIGS } from '../stories/pigs';
 
@@ -10,12 +12,13 @@ export class SelectScene extends Phaser.Scene {
 
   create() {
     backdrop(this);
+    playMusic('meadow');
     iconButton(this, 52, 52, '🏠', 'btn-home', () => { sfx.tap(); this.scene.start('home'); });
     txt(this, W / 2, H * 0.17, '어떤 이야기를 볼까?', 52).setOrigin(0.5).setShadow(0, 4, '#ffffff', 0, false, true);
 
     this.card(W / 2 - 290, 'cover-pigs', '🐷🐺', '아기 돼지 삼형제', 'play', () => this.scene.start('story', { pages: PIGS }));
     this.card(W / 2, 'cover-hood', '👧🧺', '빨간 모자', 'play', () => this.scene.start('story', { pages: HOOD }));
-    this.card(W / 2 + 290, 'cover-sunmoon', '☀️🌙', '해님 달님', 'lock', () => { tone(300, 0.2, 'triangle'); say('이 이야기는 곧 만나요!'); });
+    this.card(W / 2 + 290, 'cover-sunmoon', '☀️🌙', '해님 달님', 'lock', () => { tone(300, 0.2, 'triangle'); say(UI_LINES.soon); });
   }
 
   /* 표지 그림 (없으면 이모지) */

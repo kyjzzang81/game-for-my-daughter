@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { W, H, INK, txt, backdrop, iconButton, tex, Actor, type Bg } from '../ui';
 import { say, talk, stopTalk, type Who, type Line } from '../audio/voice';
 import { sfx } from '../audio/sfx';
+import { playMusic } from '../audio/music';
 
 /* 이야기 한 장면. play 안에서 상호작용이 끝나면 done()을 불러요 */
 export interface Page {
@@ -40,6 +41,7 @@ export class StoryScene extends Phaser.Scene {
 
   create() {
     this.bgLayer = this.add.container();
+    this.bgKind = undefined;   // 장면을 다시 시작해도 배경을 새로 그리게
     this.stage = this.add.container();
 
     // 이야기 글은 <b> 강조를 쓰려고 캔버스 대신 HTML로 그려요
@@ -218,6 +220,7 @@ export class StoryScene extends Phaser.Scene {
     this.killDeep(this.bgLayer);
     this.bgLayer.removeAll(true);
     this.bgLayer.add(backdrop(this, kind));
+    playMusic(kind);
   }
 
   /* 숲. 숲 배경 그림이 없으면 나무를 세워요 */

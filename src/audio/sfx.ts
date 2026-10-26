@@ -2,6 +2,9 @@
 const AC = window.AudioContext || (window as any).webkitAudioContext;
 let ac: AudioContext | undefined;
 
+/* 효과음과 배경음악이 함께 쓰는 오디오 */
+export function audioCtx() { return (ac ??= new AC()); }
+
 export function tone(f = 600, d = 0.15, type: OscillatorType = 'sine', slide = 0) {
   try {
     ac ??= new AC();
