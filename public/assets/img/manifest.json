@@ -74,7 +74,22 @@
   "bg-mountain": "bg-mountain.jpg",
   "bg-hanok": "bg-hanok.jpg",
   "bg-well": "bg-well.jpg",
-  "bg-sky": "bg-sky.jpg"
+  "bg-sky": "bg-sky.jpg",
+  "donkey": "donkey.png",
+  "dog": "dog.png",
+  "cat": "cat.png",
+  "rooster": "rooster.png",
+  "robber": "robber.png",
+  "house-woods": "house-woods.png",
+  "drum": "drum.png",
+  "trumpet": "trumpet.png",
+  "violin": "violin.png",
+  "guitar": "guitar.png",
+  "cover-bremen": "cover-bremen.png",
+  "bg-farm": "bg-farm.jpg",
+  "bg-road": "bg-road.jpg",
+  "bg-woods": "bg-woods.jpg",
+  "bg-cottage": "bg-cottage.jpg"
  },
  "emoji": {
   "👧": "girl",
@@ -133,6 +148,16 @@
   "☀️오빠": "sun-boy",
   "🌙동생": "moon-sis",
   "☀️동생": "sun-sis",
-  "🌙오빠": "moon-boy"
+  "🌙오빠": "moon-boy",
+  "🫏": "donkey",
+  "🐕": "dog",
+  "🐈": "cat",
+  "🐓": "rooster",
+  "🦹": "robber",
+  "🏚️": "house-woods",
+  "🥁": "drum",
+  "🎺": "trumpet",
+  "🎻": "violin",
+  "🎸": "guitar"
  }
 }

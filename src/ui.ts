@@ -17,22 +17,55 @@ const LOADED = new Set<string>();
 export const markLoaded = (name: string) => LOADED.add(name);
 export const tex = (name: string) => (LOADED.has(name) ? `img-${name}` : undefined);
 
+/* 기기 비율에 따라 보이는 영역이 1280×720보다 넓거나 높을 수 있어요.
+   카메라를 기준 화면 가운데에 맞추고, 실제로 보이는 영역(월드 좌표)을 알려 줘요 */
+export function view(s: Phaser.Scene) {
+  const { width, height } = s.scale.gameSize;
+  const left = (W - width) / 2, top = (H - height) / 2;
+  return { left, top, right: left + width, bottom: top + height, width, height };
+}
+/* 화면 크기가 바뀔 때마다 fn을 다시 불러요 (장면이 끝나면 저절로 해제) */
+export function onResize(s: Phaser.Scene, fn: () => void) {
+  fn();
+  s.scale.on('resize', fn);
+  s.events.once('shutdown', () => s.scale.off('resize', fn));
+}
+export function fitCamera(s: Phaser.Scene) {
+  onResize(s, () => s.cameras.main.centerOn(W / 2, H / 2));
+}
+/* 버튼을 실제 화면 모서리에 붙여요. ax·ay: 0 = 왼쪽·위, 1 = 오른쪽·아래 */
+export function pin(o: Phaser.GameObjects.Components.Transform, ax: 0 | 1, ay: 0 | 1, dx: number, dy: number) {
+  const s = (o as unknown as Phaser.GameObjects.GameObject).scene;
+  onResize(s, () => {
+    const v = view(s);
+    o.setPosition(ax ? v.right - dx : v.left + dx, ay ? v.bottom - dy : v.top + dy);
+  });
+}
+
 /* 배경. 그림이 있으면 그림, 없으면 하늘·풀밭·해·구름·꽃을 직접 그려요 */
-export type Bg = 'meadow' | 'forest' | 'room' | 'mountain' | 'hanok' | 'well' | 'sky';
+export type Bg = 'meadow' | 'forest' | 'room' | 'mountain' | 'hanok' | 'well' | 'sky' | 'farm' | 'road' | 'woods' | 'cottage';
 export function backdrop(s: Phaser.Scene, kind: Bg = 'meadow') {
   const c = s.add.container();
   const t = tex(`bg-${kind}`);
-  if (t) return c.add(s.add.image(0, 0, t).setOrigin(0).setDisplaySize(W, H));
+  if (t) {
+    // 보이는 영역 전체를 덮도록 (넘치는 부분은 잘려요)
+    const img = s.add.image(W / 2, H / 2, t);
+    const fit = () => { const v = view(s); img.setScale(Math.max(v.width / img.width, v.height / img.height)); };
+    onResize(s, fit);
+    img.once('destroy', () => s.scale.off('resize', fit));
+    return c.add(img);
+  }
   const g = s.add.graphics();
   c.add(g);
-  if (kind === 'room') { g.fillStyle(0xffe9d6).fillRect(0, 0, W, H * 0.62).fillStyle(0xc99a6b).fillRect(0, H * 0.62, W, H * 0.38); return c; }
-  if (kind === 'hanok' || kind === 'well' || kind === 'sky') {   // 밤 장면
-    g.fillGradientStyle(0x1d2b5c, 0x1d2b5c, 0x3c4f8f, 0x3c4f8f).fillRect(0, 0, W, kind === 'sky' ? H : H * 0.62);
-    if (kind !== 'sky') g.fillStyle(0x3d6b3a).fillRect(0, H * 0.62, W, H * 0.38);
+  if (kind === 'room' || kind === 'cottage') { g.fillStyle(0xffe9d6).fillRect(-W, -H, W * 3, H * 1.62).fillStyle(0xc99a6b).fillRect(-W, H * 0.62, W * 3, H * 1.38); return c; }
+  if (kind === 'hanok' || kind === 'well' || kind === 'sky' || kind === 'woods') {   // 밤 장면
+    g.fillGradientStyle(0x1d2b5c, 0x1d2b5c, 0x3c4f8f, 0x3c4f8f).fillRect(-W, -H, W * 3, kind === 'sky' ? H * 3 : H * 1.62);
+    if (kind !== 'sky') g.fillStyle(0x3d6b3a).fillRect(-W, H * 0.62, W * 3, H * 1.38);
     return c;
   }
-  g.fillGradientStyle(0xaee3ff, 0xaee3ff, 0xdff5ff, 0xdff5ff).fillRect(0, 0, W, H * 0.6);
-  g.fillGradientStyle(0x8fd46b, 0x8fd46b, 0x6fbf4f, 0x6fbf4f).fillRect(0, H * 0.6, W, H * 0.4);
+  g.fillStyle(0xaee3ff).fillRect(-W, -H, W * 3, H);
+  g.fillGradientStyle(0xaee3ff, 0xaee3ff, 0xdff5ff, 0xdff5ff).fillRect(-W, 0, W * 3, H * 0.6);
+  g.fillGradientStyle(0x8fd46b, 0x8fd46b, 0x6fbf4f, 0x6fbf4f).fillRect(-W, H * 0.6, W * 3, H * 1.4);
 
   const sun = s.add.graphics({ x: W * 0.94 - 45, y: H * 0.06 + 45 });
   sun.fillStyle(0xffe066, 0.13).fillCircle(0, 0, 73).fillStyle(0xffe066, 0.33).fillCircle(0, 0, 59).fillStyle(0xffe066).fillCircle(0, 0, 45);

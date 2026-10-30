@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { W, H, txt, backdrop, iconButton, tex } from '../ui';
+import { W, H, txt, backdrop, iconButton, tex, fitCamera, pin } from '../ui';
 import { sfx, tone } from '../audio/sfx';
 import { say } from '../audio/voice';
 import { playMusic } from '../audio/music';
@@ -7,19 +7,26 @@ import { UI_LINES } from '../stories/ui-lines';
 import { HOOD } from '../stories/hood';
 import { PIGS } from '../stories/pigs';
 import { SUNMOON } from '../stories/sunmoon';
+import { BREMEN } from '../stories/bremen';
 
 export class SelectScene extends Phaser.Scene {
   constructor() { super('select'); }
 
   create() {
+    fitCamera(this);
     backdrop(this);
     playMusic('meadow');
-    iconButton(this, 52, 52, '🏠', 'btn-home', () => { sfx.tap(); this.scene.start('home'); });
+    pin(iconButton(this, 52, 52, '🏠', 'btn-home', () => { sfx.tap(); this.scene.start('home'); }), 0, 0, 52, 52);
     txt(this, W / 2, H * 0.17, '어떤 이야기를 볼까?', 52).setOrigin(0.5).setShadow(0, 4, '#ffffff', 0, false, true);
 
-    this.card(W / 2 - 290, 'cover-pigs', '🐷🐺', '아기 돼지 삼형제', 'play', () => this.scene.start('story', { pages: PIGS }));
-    this.card(W / 2, 'cover-hood', '👧🧺', '빨간 모자', 'play', () => this.scene.start('story', { pages: HOOD }));
-    this.card(W / 2 + 290, 'cover-sunmoon', '☀️🌙', '해님 달님', 'play', () => this.scene.start('story', { pages: SUNMOON }));
+    // 카드 네 장을 가운데 정렬
+    ([
+      ['cover-pigs', '🐷🐺', '아기 돼지 삼형제', PIGS],
+      ['cover-hood', '👧🧺', '빨간 모자', HOOD],
+      ['cover-sunmoon', '☀️🌙', '해님 달님', SUNMOON],
+      ['cover-bremen', '🫏🐓', '브레멘 음악대', BREMEN],
+    ] as const).forEach(([cover, art, name, pages], i, all) =>
+      this.card(W / 2 + (i - (all.length - 1) / 2) * 290, cover, art, name, 'play', () => this.scene.start('story', { pages })));
   }
 
   /* 표지 그림 (없으면 이모지) */

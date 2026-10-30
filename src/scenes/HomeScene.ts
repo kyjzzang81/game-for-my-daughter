@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { W, H, txt, backdrop, pillButton, visual } from '../ui';
+import { W, H, txt, backdrop, pillButton, visual, fitCamera } from '../ui';
 import { sfx, unlockAudio } from '../audio/sfx';
 import { say } from '../audio/voice';
 import { playMusic } from '../audio/music';
@@ -9,6 +9,7 @@ export class HomeScene extends Phaser.Scene {
   constructor() { super('home'); }
 
   create() {
+    fitCamera(this);
     backdrop(this);
     ['🐰', '🐷1', '🐻'].forEach((e, i) => {
       const t = visual(this, e, 100).setPosition(W / 2 + (i - 1) * 130, H * 0.36);

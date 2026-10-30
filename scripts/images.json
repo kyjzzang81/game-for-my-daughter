@@ -491,6 +491,104 @@
       "kind": "bg",
       "size": "1536x1024",
       "prompt": "High up in the sky at twilight: soft puffy clay clouds in the lower half, a gradient from deep blue at the top to soft pink near the clouds, many tiny twinkling stars, open space in the middle."
+    },
+    "donkey": {
+      "kind": "sprite",
+      "emoji": "🫏",
+      "ref": [
+        "pig1"
+      ],
+      "prompt": "A kind old gray donkey with big floppy ears, a little gray beard, gentle smile, standing on four legs, side view. Facing and looking toward the viewer's LEFT side of the image. Same clay style as the reference."
+    },
+    "dog": {
+      "kind": "sprite",
+      "emoji": "🐕",
+      "ref": [
+        "donkey"
+      ],
+      "prompt": "A friendly old brown hound dog with long droopy ears, wagging tail, standing on four legs, side view. Facing and looking toward the viewer's LEFT side of the image. Same clay style as the reference."
+    },
+    "cat": {
+      "kind": "sprite",
+      "emoji": "🐈",
+      "ref": [
+        "donkey"
+      ],
+      "prompt": "A fluffy orange tabby cat with a long curled tail and green eyes, sitting up proudly, side view. Facing and looking toward the viewer's LEFT side of the image. Same clay style as the reference."
+    },
+    "rooster": {
+      "kind": "sprite",
+      "emoji": "🐓",
+      "ref": [
+        "donkey"
+      ],
+      "prompt": "A proud rooster with a big red comb, colorful tail feathers, standing tall with chest out, side view. Facing and looking toward the viewer's LEFT side of the image. Same clay style as the reference."
+    },
+    "robber": {
+      "kind": "sprite",
+      "emoji": "🦹",
+      "ref": [
+        "donkey"
+      ],
+      "prompt": "Two silly cartoon robbers running away in panic together, black and white striped shirts, little black eye masks, one holding a sack, big scared funny faces. Running toward the viewer's RIGHT. Not scary. Same clay style as the reference."
+    },
+    "house-woods": {
+      "kind": "sprite",
+      "emoji": "🏚️",
+      "ref": [
+        "house-wood"
+      ],
+      "prompt": "A small old wooden cottage in the woods at night, a round window glowing warm yellow light, smoke from the chimney, front view. Same clay style as the reference."
+    },
+    "drum": {
+      "kind": "sprite",
+      "emoji": "🥁",
+      "prompt": "A small red marching drum with two drumsticks."
+    },
+    "trumpet": {
+      "kind": "sprite",
+      "emoji": "🎺",
+      "prompt": "A shiny golden trumpet."
+    },
+    "violin": {
+      "kind": "sprite",
+      "emoji": "🎻",
+      "prompt": "A small brown violin with a bow."
+    },
+    "guitar": {
+      "kind": "sprite",
+      "emoji": "🎸",
+      "prompt": "A small cheerful blue acoustic guitar."
+    },
+    "cover-bremen": {
+      "kind": "sprite",
+      "ref": [
+        "donkey",
+        "dog",
+        "cat",
+        "rooster"
+      ],
+      "prompt": "A storybook cover vignette: the donkey, dog, cat and rooster from the references stacked on top of each other in a tower (donkey at the bottom, then dog, then cat, rooster on top), all singing happily with music notes around. Same characters and clay style as the references."
+    },
+    "bg-farm": {
+      "kind": "bg",
+      "size": "1536x1024",
+      "prompt": "A sunny farmyard: a red barn on the left, a low wooden fence across the right side, haystacks, blue sky with fluffy clouds, grassy ground in the lower 40 percent."
+    },
+    "bg-road": {
+      "kind": "bg",
+      "size": "1536x1024",
+      "prompt": "A winding country road through gentle green hills toward a faraway little town on the horizon, a wooden signpost near the left edge, trees and flowers at the edges, bright sky, the road running across the lower 40 percent."
+    },
+    "bg-woods": {
+      "kind": "bg",
+      "size": "1536x1024",
+      "prompt": "A dark but friendly forest at night: tall rounded trees on the left and right edges, a small clearing with soft grass in the lower 35 percent, a deep blue sky with stars and a crescent moon peeking through the treetops, fireflies. Leave the center open."
+    },
+    "bg-cottage": {
+      "kind": "bg",
+      "size": "1536x1024",
+      "prompt": "Inside a warm cozy wooden cottage at night: a big table near the back with plates of bread, cheese, sausages and fruit, a glowing fireplace on the right, wooden floor in the lower 38 percent, lanterns, open space in the front middle."
     }
   }
 }

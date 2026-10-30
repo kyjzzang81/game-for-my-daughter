@@ -60,6 +60,7 @@ export async function collectLines() {
       hood: (await server.ssrLoadModule('/src/stories/hood.ts')).HOOD,
       pigs: (await server.ssrLoadModule('/src/stories/pigs.ts')).PIGS,
       sunmoon: (await server.ssrLoadModule('/src/stories/sunmoon.ts')).SUNMOON,
+      bremen: (await server.ssrLoadModule('/src/stories/bremen.ts')).BREMEN,
     };
     const out = new Map();   // key → { who, t, story, page }
     let where = {};
@@ -70,6 +71,7 @@ export async function collectLines() {
       pages.forEach((p, page) => {
         where = { story, page };
         voice.say(p.text, p.who ?? 'narr');
+        if (p.hint) voice.say(p.hint);
         if (p.after) voice.say(p.after, p.afterWho ?? p.who ?? 'narr');
         const taps = [], anywhere = [], later = [];
         p.play(mockScene(taps, anywhere, later), () => {});

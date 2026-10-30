@@ -20,7 +20,8 @@ const game = new Phaser.Game({
   width: W,
   height: H,
   backgroundColor: '#bfe8ff',
-  scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+  // EXPAND: 1280×720 기준은 그대로 두고, 기기 비율에 맞춰 보이는 영역을 넓혀 빈 띠 없이 화면을 채워요
+  scale: { mode: Phaser.Scale.EXPAND, autoCenter: Phaser.Scale.CENTER_BOTH },
   scene: [BootScene, HomeScene, SelectScene, StoryScene],
 });
 

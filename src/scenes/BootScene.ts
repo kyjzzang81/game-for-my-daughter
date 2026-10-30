@@ -7,7 +7,7 @@ let manifest: Manifest = { files: {}, emoji: {} };
 
 /* 게임을 만들기 전에 그림·대사 목록을 받아 둬요 (main.ts에서 기다려요) */
 export async function loadManifests() {
-  const imgs = fetch('assets/img/manifest.json').then(r => (r.ok ? r.json() : manifest)).catch(() => manifest);
+  const imgs = fetch('assets/img/manifest.json', { cache: 'no-cache' }).then(r => (r.ok ? r.json() : manifest)).catch(() => manifest);
   [manifest] = await Promise.all([imgs, loadVoices()]);
 }
 

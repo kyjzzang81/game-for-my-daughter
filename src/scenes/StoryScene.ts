@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { W, H, INK, txt, backdrop, iconButton, tex, Actor, type Bg } from '../ui';
+import { W, H, INK, txt, backdrop, iconButton, tex, fitCamera, pin, view, Actor, type Bg } from '../ui';
 import { say, talk, stopTalk, type Who, type Line } from '../audio/voice';
 import { sfx } from '../audio/sfx';
 import { playMusic } from '../audio/music';
@@ -26,6 +26,7 @@ export class StoryScene extends Phaser.Scene {
   private gen = 0;                 // 장면이 바뀌면 늘어나서, 지난 장면의 늦은 콜백을 막아요
   private curWho: Who | Who[] = 'narr';
   private curText = '';
+  private curHint?: string;
   stage!: Phaser.GameObjects.Container;
   private bgLayer!: Phaser.GameObjects.Container;
   private bgKind?: Bg;
@@ -40,6 +41,7 @@ export class StoryScene extends Phaser.Scene {
   init(data: { pages: Page[] }) { this.pages = data.pages; this.idx = 0; }
 
   create() {
+    fitCamera(this);
     this.bgLayer = this.add.container();
     this.bgKind = undefined;   // 장면을 다시 시작해도 배경을 새로 그리게
     this.stage = this.add.container();
@@ -54,8 +56,11 @@ export class StoryScene extends Phaser.Scene {
     this.dots = this.pages.map((_, i) =>
       this.add.circle(W / 2 + (i - (this.pages.length - 1) / 2) * 28, 37, 9, 0xffffff, 0.5).setStrokeStyle(3, 0xffffff));
 
-    iconButton(this, 52, 52, '⬅️', 'btn-back', () => { sfx.tap(); stopTalk(); this.scene.start('select'); });
-    iconButton(this, W - 52, 52, '🔊', 'btn-sound', () => { sfx.tap(); say(this.curText, this.curWho); });
+    pin(iconButton(this, 52, 52, '⬅️', 'btn-back', () => { sfx.tap(); stopTalk(); this.scene.start('select'); }), 0, 0, 52, 52);
+    pin(iconButton(this, W - 52, 52, '🔊', 'btn-sound', () => {
+      sfx.tap(); say(this.curText, this.curWho);
+      if (this.curHint) say(this.curHint, 'narr', true);
+    }), 1, 0, 52, 52);
 
     const nt = tex('btn-next');
     const nb = nt ? [this.add.image(0, 0, nt).setDisplaySize(124, 124)]
@@ -66,6 +71,7 @@ export class StoryScene extends Phaser.Scene {
         sfx.pop(); this.idx++;
         if (this.idx < this.pages.length) this.runPage(); else { stopTalk(); this.scene.start('select'); }
       });
+    pin(this.nextBtn, 1, 1, 84, 90);
     this.tweens.add({ targets: this.nextBtn, scale: 1.14, angle: -4, duration: 550, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
     this.events.once('shutdown', () => { this.gen++; stopTalk(); });
@@ -82,6 +88,7 @@ export class StoryScene extends Phaser.Scene {
   }
 
   private setHint(text?: string) {
+    this.curHint = text;
     this.hint.setVisible(!!text);
     if (!text) return;
     this.hintText.setText(text);
@@ -100,6 +107,8 @@ export class StoryScene extends Phaser.Scene {
     this.dots.forEach((d, i) => d.setFillStyle(i <= this.idx ? 0xffd65c : 0xffffff, i <= this.idx ? 1 : 0.5));
     this.setStory(p.text, p.who ?? 'narr');
     this.setHint(p.hint);
+    // 글을 못 읽는 아이도 무엇을 할지 알 수 있게, 이야기를 다 읽은 뒤 안내 문구도 읽어 줘요
+    if (p.hint) say(p.hint, 'narr', true);
 
     let finished = false;
     p.play(this, () => {
@@ -209,8 +218,9 @@ export class StoryScene extends Phaser.Scene {
 
   /* 화면 아무 데나 누르는 층 (마지막 축하 장면용) */
   tapAnywhere(fn: (x: number, y: number) => void) {
-    const z = this.add.zone(0, 0, W, H).setOrigin(0).setInteractive();
-    z.on('pointerdown', (p: Phaser.Input.Pointer) => fn(p.x, p.y));
+    const v = view(this);
+    const z = this.add.zone(v.left, v.top, v.width, v.height).setOrigin(0).setInteractive();
+    z.on('pointerdown', (p: Phaser.Input.Pointer) => fn(p.worldX, p.worldY));
     this.stage.add(z);
   }
 
@@ -221,7 +231,7 @@ export class StoryScene extends Phaser.Scene {
     this.killDeep(this.bgLayer);
     this.bgLayer.removeAll(true);
     this.bgLayer.add(backdrop(this, kind));
-    playMusic(({ mountain: 'forest', hanok: 'night', well: 'night', sky: 'night' } as const)[kind as 'mountain'] ?? kind);
+    playMusic(({ mountain: 'forest', hanok: 'night', well: 'night', sky: 'night', farm: 'meadow', road: 'meadow', woods: 'night', cottage: 'band' } as const)[kind as 'mountain'] ?? kind);
   }
 
   /* 숲. 숲 배경 그림이 없으면 나무를 세워요 */
