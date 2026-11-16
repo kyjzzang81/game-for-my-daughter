@@ -4,6 +4,7 @@ import { BootScene, loadManifests } from './scenes/BootScene';
 import { HomeScene } from './scenes/HomeScene';
 import { SelectScene } from './scenes/SelectScene';
 import { StoryScene } from './scenes/StoryScene';
+import { AboutScene } from './scenes/AboutScene';
 
 import '@fontsource/jua';
 
@@ -22,7 +23,7 @@ const game = new Phaser.Game({
   backgroundColor: '#bfe8ff',
   // EXPAND: 1280×720 기준은 그대로 두고, 기기 비율에 맞춰 보이는 영역을 넓혀 빈 띠 없이 화면을 채워요
   scale: { mode: Phaser.Scale.EXPAND, autoCenter: Phaser.Scale.CENTER_BOTH },
-  scene: [BootScene, HomeScene, SelectScene, StoryScene],
+  scene: [BootScene, HomeScene, SelectScene, StoryScene, AboutScene],
 });
 
 // 개발 중에는 콘솔에서 game으로 장면을 살펴볼 수 있어요

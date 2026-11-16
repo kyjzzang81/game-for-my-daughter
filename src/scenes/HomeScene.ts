@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { W, H, txt, backdrop, pillButton, visual, fitCamera } from '../ui';
+import { W, H, txt, backdrop, pillButton, visual, fitCamera, iconButton, pin } from '../ui';
 import { sfx, unlockAudio } from '../audio/sfx';
 import { say } from '../audio/voice';
 import { playMusic } from '../audio/music';
@@ -22,5 +22,7 @@ export class HomeScene extends Phaser.Scene {
       unlockAudio(); sfx.pop(); playMusic('meadow'); say(UI_LINES.pick);
       this.scene.start('select');
     });
+    // 만든 사람 이야기·후원 (들어가면 어른 확인을 먼저 해요). 아이 눈에 덜 띄게 구석에 작게
+    pin(iconButton(this, 0, 0, '💌', 'btn-about', () => { sfx.tap(); this.scene.start('about'); }, 56), 1, 0, 48, 48);
   }
 }
