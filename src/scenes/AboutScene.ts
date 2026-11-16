@@ -3,15 +3,14 @@ import { W, H, txt, backdrop, iconButton, fitCamera, pin } from '../ui';
 import { sfx } from '../audio/sfx';
 import { TIPS, canTip, loadPrices, buyTip } from '../tips';
 
-const STORY = [
+const STORY_NO_TIP = [
   '안녕하세요! 저는 2023년 3월에 태어난 딸의 아빠예요.',
   '',
   '밤마다 아이와 동화책을 읽다가, 이야기 속에 함께 들어가 놀 수 있으면 좋겠다는 마음으로 이 게임을 만들었어요.',
   '',
   '광고도, 잠긴 이야기도 없어요. 모든 이야기는 처음부터 끝까지 무료예요.',
-  '',
-  '아이와 즐겁게 노셨다면 커피 한 잔으로 응원해 주세요. 새 이야기를 만드는 데 큰 힘이 돼요.',
 ].join('\n');
+const STORY = STORY_NO_TIP + '\n\n아이와 즐겁게 노셨다면 커피 한 잔으로 응원해 주세요. 새 이야기를 만드는 데 큰 힘이 돼요.';
 
 /* 만든 사람 이야기와 후원. 아이가 결제하지 않도록 들어오기 전에 어른 확인(곱셈 문제)을 거쳐요 */
 export class AboutScene extends Phaser.Scene {
@@ -62,36 +61,34 @@ export class AboutScene extends Phaser.Scene {
       .fillStyle(0x000000, 0.13).fillRoundedRect(x, y + 10, w, h, 36)
       .fillStyle(0xfffaf0).fillRoundedRect(x, y, w, h, 36);
 
-    // 왼쪽: 만든 사람 이야기
-    card(90, 110, 600, 540);
-    txt(this, 390, 160, '💌 만든 사람 이야기', 40, '#ff7aa2').setOrigin(0.5);
-    txt(this, 130, 215, STORY, 25).setAlign('left').setLineSpacing(6)
-      .setWordWrapWidth(520, true);
+    // 만든 사람 이야기. 후원 상품이 없으면(웹, 아직 등록 전) 가운데에 혼자 보여요
+    const story = this.add.container(250, 0, [
+      card(90, 110, 600, 540),
+      txt(this, 390, 160, '💌 만든 사람 이야기', 40, '#ff7aa2').setOrigin(0.5),
+    ]);
+    const body = txt(this, 130, 215, STORY_NO_TIP, 25).setAlign('left').setLineSpacing(6).setWordWrapWidth(520, true);
+    story.add(body);
 
-    // 오른쪽: 커피 한 잔 후원
-    card(730, 110, 460, 540);
-    txt(this, 960, 160, '☕ 커피 한 잔 사 주기', 40, '#ff7aa2').setOrigin(0.5);
-    const note = txt(this, 960, 600, '후원해도 바뀌는 건 없어요.\n마음이 내킬 때만 해 주세요 🙂', 20, '#8a6a5e').setOrigin(0.5);
+    if (!canTip()) return;
+    loadPrices().then(prices => {
+      const ready = TIPS.filter(t => prices[t.id]);
+      if (!ready.length || !this.scene.isActive()) return;
+      story.x = 0;
+      body.setText(STORY);
 
-    const buttons = TIPS.map((t, i) => {
-      const y = 260 + i * 110;
-      const bg = this.add.graphics().fillStyle(0xd9a92a).fillRoundedRect(-190, -42 + 6, 380, 84, 42).fillStyle(0xffd65c).fillRoundedRect(-190, -42, 380, 84, 42);
-      const label = txt(this, -160, -2, `${t.emoji} ${t.name}`, 28).setOrigin(0, 0.5);
-      const price = txt(this, 160, -2, t.fallback, 28, '#8a5a2e').setOrigin(1, 0.5);
-      const c = this.add.container(960, y, [bg, label, price]).setSize(380, 84).setInteractive({ useHandCursor: true });
-      c.on('pointerdown', () => this.tip(t.id, note));
-      return { t, c, price };
+      // 오른쪽: 커피 한 잔 후원 (스토어에 있는 상품만)
+      card(730, 110, 460, 540);
+      txt(this, 960, 160, '☕ 커피 한 잔 사 주기', 40, '#ff7aa2').setOrigin(0.5);
+      const note = txt(this, 960, 600, '후원해도 바뀌는 건 없어요.\n마음이 내킬 때만 해 주세요 🙂', 20, '#8a6a5e').setOrigin(0.5);
+      ready.forEach((t, i) => {
+        const y = 260 + i * 110;
+        const bg = this.add.graphics().fillStyle(0xd9a92a).fillRoundedRect(-190, -42 + 6, 380, 84, 42).fillStyle(0xffd65c).fillRoundedRect(-190, -42, 380, 84, 42);
+        const label = txt(this, -160, -2, `${t.emoji} ${t.name}`, 28).setOrigin(0, 0.5);
+        const price = txt(this, 160, -2, prices[t.id], 28, '#8a5a2e').setOrigin(1, 0.5);
+        this.add.container(960, y, [bg, label, price]).setSize(380, 84).setInteractive({ useHandCursor: true })
+          .on('pointerdown', () => this.tip(t.id, note));
+      });
     });
-
-    if (!canTip()) {
-      buttons.forEach(b => b.c.setAlpha(0.5).disableInteractive());
-      note.setText('후원은 아이폰·아이패드 앱에서 할 수 있어요');
-      return;
-    }
-    loadPrices().then(prices => buttons.forEach(b => {
-      if (prices[b.t.id]) b.price.setText(prices[b.t.id]);
-      else b.c.setAlpha(0.5).disableInteractive();   // 스토어에서 상품을 못 찾으면 누를 수 없게
-    }));
   }
 
   private busy = false;

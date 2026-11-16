@@ -4,7 +4,7 @@ import { Capacitor, registerPlugin } from '@capacitor/core';
    웹에서는 결제가 없어서 '앱에서만 할 수 있어요'라고만 보여 줘요.
    App Store Connect에 같은 ID로 '소모성' 인앱 구매 상품을 만들어야 해요 (RELEASE.md 참고) */
 export const TIPS = [
-  { id: 'com.yujeong.fairyplayground.tip.coffee', emoji: '☕', name: '커피 한 잔', fallback: '₩1,500' },
+  { id: 'com.yujeong.fairyplayground.tip.coffee', emoji: '☕', name: '커피 한 잔', fallback: '₩2,200' },
   { id: 'com.yujeong.fairyplayground.tip.cake', emoji: '🍰', name: '케이크 한 쪽', fallback: '₩4,400' },
   { id: 'com.yujeong.fairyplayground.tip.big', emoji: '🎁', name: '큰 응원', fallback: '₩9,900' },
 ] as const;

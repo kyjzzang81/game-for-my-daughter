@@ -21,7 +21,7 @@
 ## 3. 후원 상품 (앱 내 구입 → 소모성)
 | 제품 ID | 참조 이름 | 가격 | 표시 이름 |
 |---|---|---|---|
-| `com.yujeong.fairyplayground.tip.coffee` | 커피 한 잔 | ₩1,500 | ☕ 커피 한 잔 |
+| `com.yujeong.fairyplayground.tip.coffee` | 커피 한 잔 | ₩2,200 | ☕ 커피 한 잔 |
 | `com.yujeong.fairyplayground.tip.cake` | 케이크 | ₩4,400 | 🍰 케이크 한 쪽 |
 | `com.yujeong.fairyplayground.tip.big` | 큰 응원 | ₩9,900 | 🎁 큰 응원 |
 
